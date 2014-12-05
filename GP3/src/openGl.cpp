@@ -84,7 +84,7 @@ void OpenGl::createContext( unsigned bitsPerPx )
 			while ( _openGlConfig.antialiasingLevel > 0 && ( success == FALSE || nNumFormats == 0 ) )
 			{
 				_openGlConfig.decreaseAntialiasingLevel( );
-				piAttribIList[11] = _openGlConfig.antialiasingLevel;
+				piAttribIList[13] = _openGlConfig.antialiasingLevel;
 				success = wglChoosePixelFormatARB( _deviceContext, piAttribIList, NULL, nMaxFormats, piFormats, &nNumFormats );
 			}
 			// if successful select the best available format from the list

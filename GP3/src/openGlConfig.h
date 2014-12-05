@@ -4,7 +4,7 @@
 struct OpenGlConfig
 {
 public:
-	OpenGlConfig( ) : antialiasingLevel( 8 ), depthBits( 0 ), stencilBits( 0 )
+	OpenGlConfig( ) : antialiasingLevel( 16 ), depthBits( 0 ), stencilBits( 0 )
 	{
 	}
 	OpenGlConfig( unsigned antialiasingLevel ) : antialiasingLevel( antialiasingLevel ), depthBits( 0 ), stencilBits( 0 )
