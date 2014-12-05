@@ -3,13 +3,14 @@
 
 #include "windowConfig.h"
 #include "inputMessage.h"
+#include "openGlConfig.h"
 
-typedef HWND WindowHandle;
+class OpenGl;
 
 class Window
 {
 public:
-	Window( const wchar_t* windowName, const WindowConfig& windowConfig );
+	Window( const wchar_t* windowName, const WindowConfig& windowConfig, OpenGlConfig& openGlConfig = OpenGlConfig() );
 	Window( const Window& ) = delete;
 	Window& operator=( const Window& ) = delete;
 public:
@@ -25,6 +26,7 @@ private:
 	std::queue<InputMessage>	_messages;
 	std::array<bool, 255>		_oldKeyStates;
 	WindowHandle				_windowHandle;
+	OpenGl*						_openGl;
 	HCURSOR						_mouseCursor;
 	unsigned					_width;
 	unsigned					_height;

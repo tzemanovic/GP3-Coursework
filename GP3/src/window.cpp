@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "window.h"
+#include "openGl.h"
 
-Window::Window( const wchar_t* windowName, const WindowConfig& windowConfig ) : _oldKeyStates( ), _windowHandle( nullptr ), _mouseCursor( nullptr ), _width( windowConfig.getWidth( ) ),
-_height( windowConfig.getHeight( ) ), _bitsPerPx( windowConfig.getBitsPerPx( ) ), _windowStyle( windowConfig.getWindowStyle( ) ), _open( false ), _mouseCaptured( false ), _windowName( windowName )
+Window::Window( const wchar_t* windowName, const WindowConfig& windowConfig, OpenGlConfig& openGlConfig ) : _oldKeyStates( ), _windowHandle( nullptr ), _openGl( nullptr ), _mouseCursor( nullptr ),
+_width( windowConfig.getWidth( ) ), _height( windowConfig.getHeight( ) ), _bitsPerPx( windowConfig.getBitsPerPx( ) ), _windowStyle( windowConfig.getWindowStyle( ) ), _open( false ), _mouseCaptured( false ),
+_windowName( windowName )
 {
 	if ( isOnlyInstance( ) )
 	{
@@ -48,6 +50,7 @@ _height( windowConfig.getHeight( ) ), _bitsPerPx( windowConfig.getBitsPerPx( ) )
 			{
 				switchToFullscreen( );
 			}
+			_openGl = new OpenGl( openGlConfig, _windowHandle, windowConfig.getBitsPerPx() );
 		}
 	}
 }
@@ -57,6 +60,9 @@ bool Window::isOpen( ) const
 }
 void Window::close( )
 {
+	// destroy OpenGL context
+	delete( _openGl );
+	_openGl = nullptr;
 	// show cursor in case it was hidden
 	setMouseCursorVisibility( true );
 	ChangeDisplaySettings( 0, 0 );

@@ -12,6 +12,7 @@ class WindowConfig
 {
 public:
 	WindowConfig( );
+	explicit WindowConfig( WindowStyle windowStyle );
 	WindowConfig( const WindowConfig& ) = delete;
 	const WindowConfig& operator=( const WindowConfig& ) = delete;
 	WindowConfig( WindowConfig&& ) = delete;
