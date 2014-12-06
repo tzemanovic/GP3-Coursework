@@ -90,6 +90,7 @@
     <ClCompile Include="src\windowConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\glext.h" />
     <ClInclude Include="src\inputMessage.h" />
     <ClInclude Include="src\openGl.h" />
     <ClInclude Include="src\openGlConfig.h" />

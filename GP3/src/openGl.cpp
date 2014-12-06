@@ -1,5 +1,6 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "openGl.h"
+#include "glext.h"
 #include "wglext.h"
 
 OpenGl::OpenGl( OpenGlConfig& openGlConfig, WindowHandle window, unsigned bitsPerPx ) : _openGlConfig( openGlConfig ), _window( window ), _deviceContext( nullptr ), _openGlContext( nullptr )
@@ -10,29 +11,29 @@ OpenGl::OpenGl( OpenGlConfig& openGlConfig, WindowHandle window, unsigned bitsPe
 	if ( _deviceContext != NULL )
 	{
 		// get closest pixel format descriptor match
-		PIXELFORMATDESCRIPTOR descriptor;
-		ZeroMemory( &descriptor, sizeof( descriptor ) );
-		descriptor.nSize = sizeof( descriptor );
-		descriptor.nVersion = 1;
-		descriptor.iLayerType = PFD_MAIN_PLANE;
-		descriptor.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
-		descriptor.iPixelType = PFD_TYPE_RGBA;
-		descriptor.cColorBits = static_cast< BYTE >( bitsPerPx );
-		descriptor.cDepthBits = static_cast< BYTE >( _openGlConfig.depthBits );
-		descriptor.cStencilBits = static_cast< BYTE >( _openGlConfig.stencilBits );
-		descriptor.cAlphaBits = bitsPerPx == 32 ? 8 : 0;
-		int iPixelFormat = ChoosePixelFormat( _deviceContext, &descriptor );
+		PIXELFORMATDESCRIPTOR desc;
+		ZeroMemory( &desc, sizeof( desc ) );
+		desc.nSize = sizeof( desc );
+		desc.nVersion = 1;
+		desc.iLayerType = PFD_MAIN_PLANE;
+		desc.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+		desc.iPixelType = PFD_TYPE_RGBA;
+		desc.cColorBits = static_cast< BYTE >( bitsPerPx );
+		desc.cDepthBits = static_cast< BYTE >( _openGlConfig.depthBits );
+		desc.cStencilBits = static_cast< BYTE >( _openGlConfig.stencilBits );
+		desc.cAlphaBits = bitsPerPx == 32 ? 8 : 0;
+		int iPixelFormat = ChoosePixelFormat( _deviceContext, &desc );
 		// get descriptor for the match
-		PIXELFORMATDESCRIPTOR actualFormat;
-		actualFormat.nSize = sizeof( actualFormat );
-		actualFormat.nVersion = 1;
-		DescribePixelFormat( _deviceContext, iPixelFormat, sizeof( actualFormat ), &actualFormat );
-		_openGlConfig.depthBits = actualFormat.cDepthBits;
-		_openGlConfig.stencilBits = actualFormat.cStencilBits;
+		PIXELFORMATDESCRIPTOR actualDesc;
+		actualDesc.nSize = sizeof( actualDesc );
+		actualDesc.nVersion = 1;
+		DescribePixelFormat( _deviceContext, iPixelFormat, sizeof( actualDesc ), &actualDesc );
+		_openGlConfig.depthBits = actualDesc.cDepthBits;
+		_openGlConfig.stencilBits = actualDesc.cStencilBits;
 		// set pixel format of the device context
-		if ( SetPixelFormat( _deviceContext, iPixelFormat, &actualFormat ) == TRUE )
+		if ( SetPixelFormat( _deviceContext, iPixelFormat, &actualDesc ) == TRUE )
 		{
-			// create a rendering context  
+			// we need to create a context first to be able to get WGL functions
 			_openGlContext = wglCreateContext( _deviceContext );
 			// make it the calling thread's current rendering context 
 			if ( wglMakeCurrent( _deviceContext, _openGlContext ) == TRUE )
@@ -44,14 +45,52 @@ OpenGl::OpenGl( OpenGlConfig& openGlConfig, WindowHandle window, unsigned bitsPe
 }
 OpenGl::~OpenGl( )
 {
-	// make the rendering context not current 
-	wglMakeCurrent( NULL, NULL );
-	// delete the rendering context  
-	wglDeleteContext( _openGlContext );
+	if ( _openGlContext != nullptr )
+	{
+		// make the rendering context not current 
+		wglMakeCurrent( NULL, NULL );
+		// delete the rendering context  
+		wglDeleteContext( _openGlContext );
+	}
+	if ( _deviceContext != nullptr )
+	{
+		// release device context
+		ReleaseDC( _window, _deviceContext );
+	}
 }
 void OpenGl::createContext( unsigned bitsPerPx )
 {
-	int format = 0;
+	// create a rendering context  
+	PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = reinterpret_cast< PFNWGLCREATECONTEXTATTRIBSARBPROC >( wglGetProcAddress( "wglCreateContextAttribsARB" ) );
+	if ( wglCreateContextAttribsARB )
+	{
+		// get OpenGL version 
+		const char* ver = reinterpret_cast< const char* >( glGetString( GL_VERSION ) );
+		_openGlConfig.majorVersion = ver[0] - '0';
+		// if the major version is 3 or higher we can use glGetIntegerv instead 
+		if ( _openGlConfig.majorVersion >= 3 )
+		{
+			glGetIntegerv( GL_MAJOR_VERSION, &_openGlConfig.majorVersion );
+			glGetIntegerv( GL_MINOR_VERSION, &_openGlConfig.minorVersion );
+		}
+		else
+		{
+			_openGlConfig.minorVersion = ver[2] - '0';
+		}
+		int attribList[] =
+		{
+			WGL_CONTEXT_MAJOR_VERSION_ARB, static_cast< int >( _openGlConfig.majorVersion ),
+			WGL_CONTEXT_MINOR_VERSION_ARB, static_cast< int >( _openGlConfig.minorVersion ),
+			WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+			0, 0
+		};
+		// delete the legacy context
+		wglMakeCurrent( NULL, NULL );
+		wglDeleteContext( _openGlContext );
+		// create a new context using wglCreateContextAttribsARB instead of legacy function wglCreateContext
+		_openGlContext = wglCreateContextAttribsARB( _deviceContext, 0, attribList );
+		wglMakeCurrent( _deviceContext, _openGlContext );
+	}
 	if ( _openGlConfig.antialiasingLevel > 0 )
 	{
 		// get wglext function address
@@ -83,32 +122,37 @@ void OpenGl::createContext( unsigned bitsPerPx )
 			// if unsuccessful or no formats available, try to decrease antialiasing level
 			while ( _openGlConfig.antialiasingLevel > 0 && ( success == FALSE || nNumFormats == 0 ) )
 			{
-				_openGlConfig.decreaseAntialiasingLevel( );
+				_openGlConfig.antialiasingLevel--;
 				piAttribIList[13] = _openGlConfig.antialiasingLevel;
 				success = wglChoosePixelFormatARB( _deviceContext, piAttribIList, NULL, nMaxFormats, piFormats, &nNumFormats );
 			}
 			// if successful select the best available format from the list
 			if ( success && nNumFormats > 0 )
 			{
+				PIXELFORMATDESCRIPTOR bestDesc;
+				int iPixelFormat = 0;
 				unsigned bestMatch = UINT_MAX;
 				for ( UINT i = 0; i < nNumFormats; ++i )
 				{
 					// get descriptor for format		
-					PIXELFORMATDESCRIPTOR attributes;
-					attributes.nSize = sizeof( attributes );
-					attributes.nVersion = 1;
-					DescribePixelFormat( _deviceContext, piFormats[i], sizeof( attributes ), &attributes );
+					PIXELFORMATDESCRIPTOR desc;
+					desc.nSize = sizeof( desc );
+					desc.nVersion = 1;
+					DescribePixelFormat( _deviceContext, piFormats[i], sizeof( desc ), &desc );
 					// check how close it is to desired configuration
-					unsigned match = std::abs( static_cast< int >( attributes.cRedBits + attributes.cGreenBits + attributes.cBlueBits + attributes.cAlphaBits - bitsPerPx ) )
-						+ std::abs( static_cast< int >( _openGlConfig.depthBits - attributes.cDepthBits ) )
-						+ std::abs( static_cast< int >( _openGlConfig.stencilBits - attributes.cStencilBits ) );
+					unsigned match = std::abs( static_cast< int >( desc.cRedBits + desc.cGreenBits + desc.cBlueBits + desc.cAlphaBits - bitsPerPx ) )
+						+ std::abs( static_cast< int >( _openGlConfig.depthBits - desc.cDepthBits ) )
+						+ std::abs( static_cast< int >( _openGlConfig.stencilBits - desc.cStencilBits ) );
 					// if it's closer to desired configuration than current best match, then this is the best match
 					if ( match < bestMatch )
 					{
-						format = piFormats[i];
+						bestDesc = desc;
+						iPixelFormat = piFormats[i];
 						bestMatch = match;
 					}
 				}
+				// set the pixel format with the best selected descriptor
+				SetPixelFormat( _deviceContext, iPixelFormat, &bestDesc );
 			}
 		}
 	}

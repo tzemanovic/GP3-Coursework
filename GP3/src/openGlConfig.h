@@ -11,14 +11,11 @@ public:
 	{
 	}
 public:
-	void decreaseAntialiasingLevel( )
-	{
-		antialiasingLevel--;
-	}
-public:
 	unsigned antialiasingLevel;
 	unsigned depthBits;
 	unsigned stencilBits;
+	int majorVersion;
+	int minorVersion;
 };
 
 #endif
