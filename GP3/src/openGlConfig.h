@@ -10,9 +10,9 @@ public:
 	{
 	}
 public:
-	unsigned antialiasingLevel;
-	unsigned depthBits;
-	unsigned stencilBits;
-	int majorVersion;
-	int minorVersion;
+	unsigned	antialiasingLevel;
+	unsigned	depthBits;
+	unsigned	stencilBits;
+	int			majorVersion;
+	int			minorVersion;
 };

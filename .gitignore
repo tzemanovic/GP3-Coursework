@@ -29,3 +29,4 @@ GP3/ipch/**
 *.exe
 *.out
 *.app
+*.opensdf

@@ -23,8 +23,10 @@ typedef const wchar_t* string;
 #include <cstdint>
 #include <string>
 
+#include <memory>
 #include <utility>
 
 #include <tuple>
 #include <array>
 #include <queue>
+#include <map>

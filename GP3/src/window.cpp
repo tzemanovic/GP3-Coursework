@@ -113,6 +113,14 @@ bool Window::popMessage( InputMessage& message )
 	}
 	return false;
 }
+void Window::render( const double deltaMs )
+{
+	_openGl->render( deltaMs );
+}
+void Window::clear( float red, float green, float blue, float alpha )
+{
+	_openGl->clear( red, green, blue, alpha );
+}
 LRESULT CALLBACK Window::wndProc( WindowHandle handle, UINT message, WPARAM wParam, LPARAM lParam )
 {
 	switch ( message )

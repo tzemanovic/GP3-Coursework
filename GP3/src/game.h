@@ -6,9 +6,9 @@ class Game
 {
 public:
 	Game( string windowName, const WindowConfig& windowConfig, OpenGlConfig& openGlConfig = OpenGlConfig( ) );
+	~Game( );
 	Game( const Game& ) = delete;
 	Game& operator=( const Game& ) = delete;
-	~Game( );
 public:
 	void run( );
 private:

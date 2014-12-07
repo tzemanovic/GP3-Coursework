@@ -51,11 +51,13 @@ OpenGl::~OpenGl( )
 		wglMakeCurrent( NULL, NULL );
 		// delete the rendering context  
 		wglDeleteContext( _openGlContext );
+		_openGlContext = nullptr;
 	}
 	if ( _deviceContext != nullptr )
 	{
 		// release device context
 		ReleaseDC( _window, _deviceContext );
+		_deviceContext = nullptr;
 	}
 }
 void OpenGl::createContext( unsigned bitsPerPx )
@@ -156,4 +158,16 @@ void OpenGl::createContext( unsigned bitsPerPx )
 			}
 		}
 	}
+}
+void OpenGl::render( const double deltaMs )
+{
+	if ( _deviceContext != nullptr && _openGlContext != nullptr )
+	{
+		SwapBuffers( _deviceContext );
+	}
+}
+void OpenGl::clear( float red, float green, float blue, float alpha )
+{
+	glClearColor( red, green, blue, alpha );
+	glClear( GL_COLOR_BUFFER_BIT );
 }

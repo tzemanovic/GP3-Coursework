@@ -84,19 +84,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\camera.cpp" />
+    <ClCompile Include="src\component.cpp" />
     <ClCompile Include="src\game.cpp" />
+    <ClCompile Include="src\gameObject.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\openGl.cpp" />
+    <ClCompile Include="src\playerView.cpp" />
+    <ClCompile Include="src\view.cpp" />
     <ClCompile Include="src\window.cpp" />
     <ClCompile Include="src\windowConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\camera.h" />
+    <ClInclude Include="src\component.h" />
     <ClInclude Include="src\game.h" />
+    <ClInclude Include="src\gameObject.h" />
     <ClInclude Include="src\glext.h" />
     <ClInclude Include="src\inputMessage.h" />
     <ClInclude Include="src\openGl.h" />
     <ClInclude Include="src\openGlConfig.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\playerView.h" />
+    <ClInclude Include="src\view.h" />
     <ClInclude Include="src\wglext.h" />
     <ClInclude Include="src\window.h" />
     <ClInclude Include="src\windowConfig.h" />

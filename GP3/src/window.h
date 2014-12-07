@@ -18,6 +18,8 @@ public:
 	void close( );
 	void switchToFullscreen( );
 	bool popMessage( InputMessage& message );
+	void render( const double deltaMs );
+	void clear( float red, float green, float blue, float alpha = 0.f );
 public:
 	static std::tuple<unsigned, unsigned, unsigned> getCurrentMode( );
 	static double time( );

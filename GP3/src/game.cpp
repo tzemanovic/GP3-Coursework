@@ -57,13 +57,17 @@ void Game::run( )
 			}
 			}
 		}
-		render( deltaMs );
-		update( deltaMs );
+		if ( running )
+		{
+			render( deltaMs );
+			update( deltaMs );
+		}
 	}
 }
 void Game::render( const double deltaMs )
 {
-
+	_window->clear( 0.f, 0.f, 0.f );
+	_window->render( deltaMs );
 }
 void Game::update( const double deltaMs )
 {
