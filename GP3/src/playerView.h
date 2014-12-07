@@ -14,4 +14,5 @@ public:
 	virtual void vUpdate( const float deltaMs ) override;
 	virtual const bool vProcessMessage( const InputMessage& message ) override;
 protected:
+	std::shared_ptr< Camera >		_camera;
 };

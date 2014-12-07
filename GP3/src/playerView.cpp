@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "playerView.h"
 
-PlayerView::PlayerView( ) : View()
+PlayerView::PlayerView( ) : View( ), _camera( nullptr )
 {
 
 }

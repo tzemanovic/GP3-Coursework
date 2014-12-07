@@ -17,5 +17,4 @@ public:
 	virtual const bool vProcessMessage( const InputMessage& message ) = 0;
 protected:
 	std::shared_ptr< GameObject >	_owner;
-	std::shared_ptr< Camera >		_camera;
 };
