@@ -1,8 +1,7 @@
 ///
 /// precompiled header
 ///
-#ifndef PCH_H
-#define PCH_H
+#pragma once
 
 // exclude rarely-used services from Windows headers
 #ifndef WIN32_LEAN_AND_MEAN
@@ -16,6 +15,7 @@
 typedef HWND WindowHandle;
 typedef HDC DeviceContextHandle;
 typedef HGLRC OpenGlContextHandle; 
+typedef const wchar_t* string;
 
 // for quick debugging
 #include <iostream>
@@ -28,5 +28,3 @@ typedef HGLRC OpenGlContextHandle;
 #include <tuple>
 #include <array>
 #include <queue>
-
-#endif

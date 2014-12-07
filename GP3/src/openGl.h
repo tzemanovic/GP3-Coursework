@@ -1,5 +1,4 @@
-#ifndef OPEN_GL_H
-#define OPEN_GL_H
+#pragma once
 
 #include "openGlConfig.h"
 
@@ -15,5 +14,3 @@ private:
 	DeviceContextHandle	_deviceContext;
 	OpenGlContextHandle _openGlContext;
 };
-
-#endif

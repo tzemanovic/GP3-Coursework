@@ -2,7 +2,7 @@
 #include "window.h"
 #include "openGl.h"
 
-Window::Window( const wchar_t* windowName, const WindowConfig& windowConfig, OpenGlConfig& openGlConfig ) : _oldKeyStates( ), _windowHandle( nullptr ), _openGl( nullptr ), _mouseCursor( nullptr ),
+Window::Window( string windowName, const WindowConfig& windowConfig, OpenGlConfig& openGlConfig ) : _oldKeyStates( ), _windowHandle( nullptr ), _openGl( nullptr ), _mouseCursor( nullptr ),
 _width( windowConfig.getWidth( ) ), _height( windowConfig.getHeight( ) ), _bitsPerPx( windowConfig.getBitsPerPx( ) ), _windowStyle( windowConfig.getWindowStyle( ) ), _open( false ), _mouseCaptured( false ),
 _windowName( windowName )
 {

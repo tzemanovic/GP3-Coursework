@@ -1,5 +1,4 @@
-#ifndef WINDOW_CONFIG_H
-#define WINDOW_CONFIG_H
+#pragma once
 
 enum class WindowStyle : unsigned
 {
@@ -28,5 +27,3 @@ private:
 	unsigned		_bitsPerPx;
 	WindowStyle		_windowStyle;
 };
-
-#endif

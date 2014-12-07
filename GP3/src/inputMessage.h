@@ -1,5 +1,4 @@
-#ifndef INPUT_MESSAGE_H
-#define INPUT_MESSAGE_H
+#pragma once
 
 enum class Key : unsigned char
 {
@@ -213,5 +212,3 @@ public:
 		TextMessage text;
 	};
 };
-
-#endif

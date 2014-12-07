@@ -1,5 +1,4 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#pragma once
 
 #include "windowConfig.h"
 #include "inputMessage.h"
@@ -10,7 +9,7 @@ class OpenGl;
 class Window
 {
 public:
-	Window( const wchar_t* windowName, const WindowConfig& windowConfig, OpenGlConfig& openGlConfig = OpenGlConfig() );
+	Window( string windowName, const WindowConfig& windowConfig, OpenGlConfig& openGlConfig );
 	Window( const Window& ) = delete;
 	Window& operator=( const Window& ) = delete;
 public:
@@ -34,7 +33,7 @@ private:
 	WindowStyle					_windowStyle;
 	bool						_open;
 	bool						_mouseCaptured;
-	const wchar_t*				_windowName;
+	string						_windowName;
 private:
 	LRESULT CALLBACK wndProc( WindowHandle handle, UINT message, WPARAM wParam, LPARAM lParam );
 	void processMessages( );
@@ -46,5 +45,3 @@ private:
 	static void setWindowVisibility( WindowHandle windowHandle, bool visible );
 	static LRESULT CALLBACK staticWndProc( WindowHandle handle, UINT message, WPARAM wParam, LPARAM lParam );
 };
-
-#endif

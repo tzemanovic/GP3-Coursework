@@ -84,12 +84,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\openGl.cpp" />
     <ClCompile Include="src\window.cpp" />
     <ClCompile Include="src\windowConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\game.h" />
     <ClInclude Include="src\glext.h" />
     <ClInclude Include="src\inputMessage.h" />
     <ClInclude Include="src\openGl.h" />

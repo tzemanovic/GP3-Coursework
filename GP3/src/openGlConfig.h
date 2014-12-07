@@ -1,5 +1,4 @@
-#ifndef OPEN_GL_CONFIG_H
-#define OPEN_GL_CONFIG_H
+#pragma once
 
 struct OpenGlConfig
 {
@@ -17,5 +16,3 @@ public:
 	int majorVersion;
 	int minorVersion;
 };
-
-#endif

@@ -1,3 +1,6 @@
+GP3/Debug/**
+GP3/ipch/**
+
 # Compiled Object files
 *.slo
 *.lo
