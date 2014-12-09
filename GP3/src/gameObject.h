@@ -18,4 +18,5 @@ public:
 	GameObject& operator=( const GameObject& ) = delete;
 private:
 	std::map< ComponentType, std::shared_ptr< Component > > _components;
+	glm::vec3												_position;
 };

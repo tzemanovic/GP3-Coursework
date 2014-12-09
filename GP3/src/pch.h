@@ -9,6 +9,8 @@
 #endif
 #include <Windows.h>
 #include <cstdlib>
+#include <GL/glew.h>
+#include <glm/glm.hpp>
 #include <GL/gl.h>
 #include <GL/glu.h>
 

@@ -38,6 +38,7 @@ OpenGl::OpenGl( OpenGlConfig& openGlConfig, WindowHandle window, unsigned bitsPe
 			// make it the calling thread's current rendering context 
 			if ( wglMakeCurrent( _deviceContext, _openGlContext ) == TRUE )
 			{
+				glewInit( );
 				createContext( bitsPerPx );
 			}
 		}
@@ -169,5 +170,6 @@ void OpenGl::render( const double deltaMs )
 void OpenGl::clear( float red, float green, float blue, float alpha )
 {
 	glClearColor( red, green, blue, alpha );
-	glClear( GL_COLOR_BUFFER_BIT );
+	glClearDepth( 1.f );
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
