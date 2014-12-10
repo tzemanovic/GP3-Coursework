@@ -1,6 +1,7 @@
 #pragma once
 
 #include "view.h"
+#include "scene.h"
 
 class PlayerView : public View
 {
@@ -10,9 +11,10 @@ public:
 	PlayerView( const PlayerView& ) = delete;
 	PlayerView& operator=( const PlayerView& ) = delete;
 public:
-	virtual void vRender( const float deltaMs ) override;
-	virtual void vUpdate( const float deltaMs ) override;
+	virtual void vRender( const Time& time, OpenGl* openGl ) override;
+	virtual void vUpdate( const Time& time ) override;
 	virtual const bool vProcessMessage( const InputMessage& message ) override;
 protected:
-	std::shared_ptr< Camera >		_camera;
+	std::shared_ptr< Camera >	_camera;
+	Scene						_scene;
 };

@@ -1,8 +1,8 @@
 #pragma once
 
-class GameObject;
 class InputMessage;
-class Camera;
+class OpenGl;
+struct Time;
 
 class View
 {
@@ -12,9 +12,8 @@ public:
 	View( const View& ) = delete;
 	View& operator=( const View& ) = delete;
 public:
-	virtual void vRender( const float deltaMs ) = 0;
-	virtual void vUpdate( const float deltaMs ) = 0;
+	virtual void vRender( const Time& time, OpenGl* openGl ) = 0;
+	virtual void vUpdate( const Time& time ) = 0;
 	virtual const bool vProcessMessage( const InputMessage& message ) = 0;
 protected:
-	std::shared_ptr< GameObject >	_owner;
 };

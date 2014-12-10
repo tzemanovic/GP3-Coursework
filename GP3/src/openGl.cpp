@@ -1,7 +1,8 @@
 ﻿#include "pch.h"
 #include "openGl.h"
-#include "glext.h"
-#include "wglext.h"
+#include "3rdParty/glext.h"
+#include "3rdParty/wglext.h"
+#include "renderable.h"
 
 OpenGl::OpenGl( OpenGlConfig& openGlConfig, WindowHandle window, unsigned bitsPerPx ) : _openGlConfig( openGlConfig ), _window( window ), _deviceContext( nullptr ), _openGlContext( nullptr )
 {
@@ -160,7 +161,7 @@ void OpenGl::createContext( unsigned bitsPerPx )
 		}
 	}
 }
-void OpenGl::render( const double deltaMs )
+void OpenGl::display( )
 {
 	if ( _deviceContext != nullptr && _openGlContext != nullptr )
 	{

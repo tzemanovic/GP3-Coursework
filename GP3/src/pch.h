@@ -11,13 +11,15 @@
 #include <cstdlib>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 #include <GL/gl.h>
 #include <GL/glu.h>
 
-typedef HWND WindowHandle;
-typedef HDC DeviceContextHandle;
-typedef HGLRC OpenGlContextHandle; 
-typedef const wchar_t* string;
+typedef HWND			WindowHandle;
+typedef HDC				DeviceContextHandle;
+typedef HGLRC			OpenGlContextHandle; 
+typedef const wchar_t*	String;
+typedef unsigned		GameObjectId;
 
 // for quick debugging
 #include <iostream>

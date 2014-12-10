@@ -5,20 +5,25 @@
 #include "openGlConfig.h"
 
 class OpenGl;
+class Renderable;
+class Camera;
+struct Time;
 
 class Window
 {
 public:
-	Window( string windowName, const WindowConfig& windowConfig, OpenGlConfig& openGlConfig );
+	Window( String windowName, const WindowConfig& windowConfig, OpenGlConfig& openGlConfig );
 	Window( const Window& ) = delete;
 	Window& operator=( const Window& ) = delete;
 public:
 	bool isOpen( ) const;
+	OpenGl* getOpenGl( ) const;
 public:
 	void close( );
 	void switchToFullscreen( );
 	bool popMessage( InputMessage& message );
-	void render( const double deltaMs );
+	void render( const Time& time, Renderable* renderable, std::shared_ptr< Camera > camera );
+	void display( );
 	void clear( float red, float green, float blue, float alpha = 0.f );
 public:
 	static std::tuple<unsigned, unsigned, unsigned> getCurrentMode( );
@@ -35,7 +40,7 @@ private:
 	WindowStyle					_windowStyle;
 	bool						_open;
 	bool						_mouseCaptured;
-	string						_windowName;
+	String						_windowName;
 private:
 	LRESULT CALLBACK wndProc( WindowHandle handle, UINT message, WPARAM wParam, LPARAM lParam );
 	void processMessages( );

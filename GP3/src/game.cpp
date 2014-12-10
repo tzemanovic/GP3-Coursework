@@ -1,8 +1,11 @@
 #include "pch.h"
 #include "game.h"
 #include "window.h"
+#include "view.h"
+#include "gameObject.h"
+#include "time.h"
 
-Game::Game( string windowName, const WindowConfig& windowConfig, OpenGlConfig& openGlConfig ) : _window( nullptr )
+Game::Game( String windowName, const WindowConfig& windowConfig, OpenGlConfig& openGlConfig ) : _lastId( 0 ), _window( nullptr )
 {
 	_window = new Window( windowName, windowConfig, openGlConfig );
 }
@@ -24,6 +27,7 @@ void Game::run( )
 	{
 		double currentMs = Window::time( ) - startTime;
 		double deltaMs = currentMs - previousTime;
+		Time time{ currentMs, deltaMs };
 		double fps = 1000 / deltaMs;
 		std::cout << ( fps ) << '\n';
 		previousTime = currentMs;
@@ -59,17 +63,40 @@ void Game::run( )
 		}
 		if ( running )
 		{
-			render( deltaMs );
-			update( deltaMs );
+			render( time );
+			update( time );
 		}
 	}
 }
-void Game::render( const double deltaMs )
+void Game::addView( View* view )
+{
+	_views.push_back( view );
+}
+void Game::addGameObject( std::shared_ptr< GameObject > gameObject )
+{
+	GameObjectId id = ++_lastId;
+	gameObject->setId( id );
+	_gameObjects.insert( std::make_pair( id, gameObject ) );
+}
+void Game::render( const Time& time )
 {
 	_window->clear( 0.f, 0.f, 0.f );
-	_window->render( deltaMs );
+	for each ( auto view in _views )
+	{
+		view->vRender( time, _window->getOpenGl( ) );
+	}
+	_window->display( );
 }
-void Game::update( const double deltaMs )
+void Game::update( const Time& time )
 {
-
+	// update views
+	for each ( auto view in _views )
+	{
+		view->vUpdate( time );
+	}
+	// update game objects
+	for each ( auto gameObject in _gameObjects )
+	{
+		gameObject.second->update( time );
+	}
 }

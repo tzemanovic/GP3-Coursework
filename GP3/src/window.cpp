@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "window.h"
 #include "openGl.h"
+#include "renderable.h"
 
-Window::Window( string windowName, const WindowConfig& windowConfig, OpenGlConfig& openGlConfig ) : _oldKeyStates( ), _windowHandle( nullptr ), _openGl( nullptr ), _mouseCursor( nullptr ),
+Window::Window( String windowName, const WindowConfig& windowConfig, OpenGlConfig& openGlConfig ) : _oldKeyStates( ), _windowHandle( nullptr ), _openGl( nullptr ), _mouseCursor( nullptr ),
 _width( windowConfig.getWidth( ) ), _height( windowConfig.getHeight( ) ), _bitsPerPx( windowConfig.getBitsPerPx( ) ), _windowStyle( windowConfig.getWindowStyle( ) ), _open( false ), _mouseCaptured( false ),
 _windowName( windowName )
 {
@@ -57,6 +58,10 @@ _windowName( windowName )
 bool Window::isOpen( ) const
 {
 	return _open;
+}
+OpenGl* Window::getOpenGl( ) const
+{
+	return _openGl;
 }
 void Window::close( )
 {
@@ -113,9 +118,13 @@ bool Window::popMessage( InputMessage& message )
 	}
 	return false;
 }
-void Window::render( const double deltaMs )
+void Window::render( const Time& time, Renderable* renderable, std::shared_ptr< Camera > camera )
 {
-	_openGl->render( deltaMs );
+	renderable->vRender( time, _openGl, camera );
+}
+void Window::display( )
+{
+	_openGl->display( );
 }
 void Window::clear( float red, float green, float blue, float alpha )
 {
