@@ -1,4 +1,5 @@
 GP3/Debug/**
+GP3/Release/**
 GP3/ipch/**
 
 # Compiled Object files
@@ -11,19 +12,8 @@ GP3/ipch/**
 *.gch
 *.pch
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
 # Fortran module files
 *.mod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
 
 # Executables
 *.exe
