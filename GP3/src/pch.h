@@ -17,10 +17,6 @@
 // OpenGL
 #include <GL/gl.h>
 #include <GL/glu.h>
-// Assimp
-#include <Importer.hpp>
-#include <scene.h>
-#include <postprocess.h>
 
 typedef HWND			WindowHandle;
 typedef HDC				DeviceContextHandle;
