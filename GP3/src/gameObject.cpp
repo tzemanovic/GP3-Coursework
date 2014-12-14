@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "gameObject.h"
 #include "component.h"
-#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 GameObject::GameObject( ) : _pos( ), _scale( 1.f ), _rot( ), _transform( ), _transformNonScaled( ), _fixed( false )
 {
 
@@ -42,15 +43,11 @@ template< class TComponent > std::weak_ptr< TComponent > GameObject::getComponen
 }
 void GameObject::update( const Time& time )
 {
-	if ( _fixed )
+	if ( !_fixed )
 	{
 		_transform = glm::mat4_cast( _rot );
 		_transformNonScaled = glm::translate( _transform, _pos );
-		_transform = glm::scale( _transform, _scale );
-	}
-	for each ( auto component in _components )
-	{
-		//component.second->vUpdate( deltaMs );
+		_transform = glm::scale( _transformNonScaled, _scale );
 	}
 }
 void GameObject::addComponent( std::shared_ptr< GameObject > gameObject, std::shared_ptr< Component > component )

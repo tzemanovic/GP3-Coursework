@@ -131,5 +131,11 @@
     <ClInclude Include="src\3rdParty\wglext.h">
       <Filter>3rdParty</Filter>
     </ClInclude>
+    <ClInclude Include="src\vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

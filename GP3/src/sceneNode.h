@@ -23,6 +23,8 @@ public:
 public:
 	void setParent( SceneNode* sceneNode );
 	void addChild( std::shared_ptr< SceneNode > sceneNode );
+	const glm::vec3 getPosition( ) const;
+	const glm::vec3 getWorldPosition( ) const;
 public:
 	virtual bool vIsVisible( Scene* scene ) const;
 	virtual void vPreRender( Scene* scene );

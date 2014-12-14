@@ -20,6 +20,7 @@ Game::~Game( )
 }
 void Game::run( )
 {
+	LOG( "Error importing file: \"" << "a" << "\". Error message: " << "a" );
 	bool running = true;
 	double startTime = Window::time( );
 	double previousTime = 0.0;
@@ -29,7 +30,7 @@ void Game::run( )
 		double deltaMs = currentMs - previousTime;
 		Time time{ currentMs, deltaMs };
 		double fps = 1000 / deltaMs;
-		std::cout << ( fps ) << '\n';
+		//std::cout << ( fps ) << '\n';
 		previousTime = currentMs;
 		InputMessage msg;
 		while ( _window->popMessage( msg ) )

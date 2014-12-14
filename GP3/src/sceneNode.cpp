@@ -22,6 +22,19 @@ void SceneNode::addChild( std::shared_ptr< SceneNode > sceneNode )
 	_children.push_back( sceneNode );
 	sceneNode->setParent( this );
 }
+const glm::vec3 SceneNode::getPosition( ) const
+{
+	return glm::vec3( _toWorld[3] );
+}
+const glm::vec3 SceneNode::getWorldPosition( ) const
+{
+	glm::vec3 pos = getPosition( );
+	if ( _parent )
+	{
+		pos += _parent->getWorldPosition( );
+	}
+	return pos;
+}
 bool SceneNode::vIsVisible( Scene* scene ) const
 {
 	return true;
