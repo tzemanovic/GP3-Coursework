@@ -20,3 +20,4 @@ GP3/ipch/**
 *.out
 *.app
 *.opensdf
+*.db

@@ -28,9 +28,9 @@ public:
 public:
 	virtual bool vIsVisible( Scene* scene ) const;
 	virtual void vPreRender( Scene* scene );
-	virtual void vRender( Scene* scene, const Time& time, OpenGl* openGl, std::shared_ptr< Camera > camera );
+	virtual void vRender( Scene* scene, const Time& time, std::shared_ptr< Camera > camera );
 	virtual void vPostRender( Scene* scene );
-	virtual void vRenderChildren( Scene* scene, const Time& time, OpenGl* openGl, std::shared_ptr< Camera > camera );
+	virtual void vRenderChildren( Scene* scene, const Time& time, std::shared_ptr< Camera > camera );
 	virtual void vUpdate( Scene* scene, const Time& time );
 protected:
 	GameObjectId								_gameObjectId;

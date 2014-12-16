@@ -3,6 +3,7 @@
 #include "componentType.h"
 
 class GameObject;
+class Game;
 
 class Component
 {
@@ -10,6 +11,8 @@ class Component
 public:
 	Component( ComponentType type );
 	virtual ~Component( );
+public:
+	virtual void vInit( Game& game ) {}
 public:
 	ComponentType getType( );
 	std::shared_ptr< GameObject > getOwner( );

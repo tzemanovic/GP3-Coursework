@@ -2,11 +2,13 @@
 #include "window.h"
 #include "openGl.h"
 #include "renderable.h"
+#include "stringUtils.h"
 
-Window::Window( String windowName, const WindowConfig& windowConfig, OpenGlConfig& openGlConfig ) : _oldKeyStates( ), _windowHandle( nullptr ), _openGl( nullptr ), _mouseCursor( nullptr ),
-_width( windowConfig.getWidth( ) ), _height( windowConfig.getHeight( ) ), _bitsPerPx( windowConfig.getBitsPerPx( ) ), _windowStyle( windowConfig.getWindowStyle( ) ), _open( false ), _mouseCaptured( false ),
-_windowName( windowName )
+Window::Window( String&& windowName, const WindowConfig& windowConfig, OpenGlConfig& openGlConfig ) : _oldKeyStates( ), _windowHandle( nullptr ), _openGl( nullptr ), _mouseCursor( nullptr ),
+_width( windowConfig.getWidth( ) ), _height( windowConfig.getHeight( ) ), _bitsPerPx( windowConfig.getBitsPerPx( ) ), _windowStyle( windowConfig.getWindowStyle( ) ), _open( false ), _mouseCaptured( false )
 {
+	std::wstring windowNameW = s2ws( windowName );
+	_windowName = windowNameW.c_str( );
 	if ( isOnlyInstance( ) )
 	{
 		// window class details
@@ -51,7 +53,7 @@ _windowName( windowName )
 			{
 				switchToFullscreen( );
 			}
-			_openGl = new OpenGl( openGlConfig, _windowHandle, windowConfig.getBitsPerPx() );
+			_openGl = new OpenGl( openGlConfig, _windowHandle, windowConfig.getBitsPerPx( ) );
 		}
 	}
 }
@@ -120,7 +122,7 @@ bool Window::popMessage( InputMessage& message )
 }
 void Window::render( const Time& time, Renderable* renderable, std::shared_ptr< Camera > camera )
 {
-	renderable->vRender( time, _openGl, camera );
+	renderable->vRender( time, camera );
 }
 void Window::display( )
 {

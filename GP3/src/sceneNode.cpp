@@ -49,27 +49,27 @@ void SceneNode::vPreRender( Scene* scene )
 		_fromWorld =  glm::inverse( _toWorld );
 	}
 }
-void SceneNode::vRender( Scene* scene, const Time& time, OpenGl* openGl, std::shared_ptr< Camera > camera )
+void SceneNode::vRender( Scene* scene, const Time& time, std::shared_ptr< Camera > camera )
 {
 	if ( _renderComponent != nullptr )
 	{
-		_renderComponent->vRender( time, openGl, camera );
+		_renderComponent->vRender( time, camera, _toWorld );
 	}
-	vRenderChildren( scene, time, openGl, camera );
+	vRenderChildren( scene, time, camera );
 }
 void SceneNode::vPostRender( Scene* scene )
 {
 
 }
-void SceneNode::vRenderChildren( Scene* scene, const Time& time, OpenGl* openGl, std::shared_ptr< Camera > camera )
+void SceneNode::vRenderChildren( Scene* scene, const Time& time, std::shared_ptr< Camera > camera )
 {
 	for each ( auto child in _children )
 	{
 		if ( child->vIsVisible( scene ) )
 		{
 			child->vPreRender( scene );
-			child->vRender( scene, time, openGl, camera );
-			child->vRenderChildren( scene, time, openGl, camera );
+			child->vRender( scene, time, camera );
+			child->vRenderChildren( scene, time, camera );
 			child->vPostRender( scene );
 		}
 	}

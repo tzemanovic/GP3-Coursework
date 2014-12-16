@@ -1,7 +1,10 @@
 #pragma once
 
+#include "renderPassType.h"
+
 class InputMessage;
-class OpenGl;
+class SceneNode;
+class Game;
 struct Time;
 
 class View
@@ -12,7 +15,9 @@ public:
 	View( const View& ) = delete;
 	View& operator=( const View& ) = delete;
 public:
-	virtual void vRender( const Time& time, OpenGl* openGl ) = 0;
+	virtual void vInit( Game& game ) = 0;
+	virtual void vAddSceneNode( std::shared_ptr< SceneNode > sceneNode, RenderPassType renderPass ) = 0;
+	virtual void vRender( const Time& time ) = 0;
 	virtual void vUpdate( const Time& time ) = 0;
 	virtual const bool vProcessMessage( const InputMessage& message ) = 0;
 protected:

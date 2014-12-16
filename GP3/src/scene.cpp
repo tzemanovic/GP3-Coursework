@@ -10,9 +10,9 @@ Scene::~Scene( )
 {
 
 }
-void Scene::render( const Time& time, OpenGl* openGl, std::shared_ptr< Camera > camera )
+void Scene::render( const Time& time, std::shared_ptr< Camera > camera )
 {
-	_rootNode.vRender( this, time, openGl, camera );
+	_rootNode.vRender( this, time, camera );
 }
 void Scene::update( const Time& time )
 {
@@ -24,32 +24,32 @@ void Scene::addSceneNode( std::shared_ptr< SceneNode > sceneNode, RenderPassType
 }
 Scene::RootSceneNode::RootSceneNode( ) : SceneNode( )
 {
-	_children.reserve( RenderPassType::Count );
+	_children.resize( +RenderPassType::Count );
 
 	std::shared_ptr< SceneNode > firstGroup( new SceneNode( ) );
-	addChild( firstGroup, RenderPassType::First );
+	_children[+RenderPassType::First] = firstGroup;
 	std::shared_ptr< SceneNode > skyGroup( new SceneNode( ) );
-	addChild( skyGroup, RenderPassType::Sky );
+	_children[+RenderPassType::Sky] = skyGroup;
 	std::shared_ptr< SceneNode > gameObjectsGroup( new SceneNode( ) );
-	addChild( gameObjectsGroup, RenderPassType::GameObject );
+	_children[+RenderPassType::GameObject] = gameObjectsGroup;
 	std::shared_ptr< SceneNode > hudGroup( new SceneNode( ) );
-	addChild( hudGroup, RenderPassType::HUD );
+	_children[+RenderPassType::HUD] = hudGroup;
 }
 void Scene::RootSceneNode::addChild( std::shared_ptr< SceneNode > sceneNode, RenderPassType renderPass )
 {
-	_children[renderPass]->addChild( sceneNode );
+	_children[+renderPass]->addChild( sceneNode );
 }
-void Scene::RootSceneNode::vRenderChildren( Scene* scene, const Time& time, OpenGl* openGl, std::shared_ptr< Camera > camera )
+void Scene::RootSceneNode::vRenderChildren( Scene* scene, const Time& time, std::shared_ptr< Camera > camera )
 {
 	// render children in order of their render pass
-	for ( unsigned i = RenderPassType::First; i < RenderPassType::Count; ++i )
+	for ( RenderPassType i = RenderPassType::First; i < RenderPassType::Count; ++i )
 	{
 		switch ( i )
 		{
 		case RenderPassType::Sky:
 		case RenderPassType::GameObject:
 		case RenderPassType::HUD:
-			_children[i]->vRenderChildren( scene, time, openGl, camera );
+			_children[+i]->vRenderChildren( scene, time, camera );
 			break;
 		}
 	}

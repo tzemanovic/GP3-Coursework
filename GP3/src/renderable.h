@@ -1,6 +1,5 @@
 #pragma once
 
-class OpenGl;
 class Camera;
 struct Time;
 
@@ -14,5 +13,5 @@ public:
 	{
 	}
 public:
-	virtual void vRender( const Time& time, OpenGl* openGl, std::shared_ptr< Camera > camera ) = 0;
+	virtual void vRender( const Time& time, std::shared_ptr< Camera > camera, const glm::mat4& toWorld = glm::mat4( ) ) = 0;
 };

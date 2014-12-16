@@ -11,26 +11,6 @@ GameObject::~GameObject( )
 {
 
 }
-const GameObjectId GameObject::getId( ) const
-{
-	return _id;
-}
-const glm::mat4& GameObject::getTransform( ) const
-{
-	return _transform;
-}
-const glm::mat4& GameObject::getTransformNonScaled( ) const
-{
-	return _transformNonScaled;
-}
-bool GameObject::isFixed( ) const
-{
-	return _fixed;
-}
-void GameObject::setFixed( bool fixed )
-{
-	_fixed = fixed;
-}
 template< class TComponent > std::weak_ptr< TComponent > GameObject::getComponent( ComponentType type )
 {
 	// return weak_ptr to avoid circular reference
@@ -41,13 +21,24 @@ template< class TComponent > std::weak_ptr< TComponent > GameObject::getComponen
 	}
 	return std::weak_ptr< TComponent >( );
 }
+void GameObject::init( Game& game )
+{
+	for each( auto component in _components )
+	{
+		component.second->vInit( game );
+	}
+}
 void GameObject::update( const Time& time )
 {
 	if ( !_fixed )
 	{
-		_transform = glm::mat4_cast( _rot );
-		_transformNonScaled = glm::translate( _transform, _pos );
+		_transformNonScaled = glm::translate( glm::mat4( ), _pos );
+		_transformNonScaled = _transformNonScaled * glm::mat4_cast( _rot );
 		_transform = glm::scale( _transformNonScaled, _scale );
+	}
+	if ( _onUpdate != nullptr )
+	{
+		_onUpdate( *this, time );
 	}
 }
 void GameObject::addComponent( std::shared_ptr< GameObject > gameObject, std::shared_ptr< Component > component )

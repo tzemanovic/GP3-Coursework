@@ -12,7 +12,7 @@ struct Time;
 class Window
 {
 public:
-	Window( String windowName, const WindowConfig& windowConfig, OpenGlConfig& openGlConfig );
+	Window( String&& windowName, const WindowConfig& windowConfig, OpenGlConfig& openGlConfig );
 	Window( const Window& ) = delete;
 	Window& operator=( const Window& ) = delete;
 public:
@@ -25,6 +25,15 @@ public:
 	void render( const Time& time, Renderable* renderable, std::shared_ptr< Camera > camera );
 	void display( );
 	void clear( float red, float green, float blue, float alpha = 0.f );
+public:
+	const unsigned getWidth( ) const
+	{
+		return _width;
+	}
+	const unsigned getHeight( ) const
+	{
+		return _height;
+	}
 public:
 	static std::tuple<unsigned, unsigned, unsigned> getCurrentMode( );
 	static double time( );
@@ -40,7 +49,7 @@ private:
 	WindowStyle					_windowStyle;
 	bool						_open;
 	bool						_mouseCaptured;
-	String						_windowName;
+	LPCWSTR 					_windowName;
 private:
 	LRESULT CALLBACK wndProc( WindowHandle handle, UINT message, WPARAM wParam, LPARAM lParam );
 	void processMessages( );

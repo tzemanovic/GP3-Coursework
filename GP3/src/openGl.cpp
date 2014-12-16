@@ -3,6 +3,7 @@
 #include "3rdParty/glext.h"
 #include "3rdParty/wglext.h"
 #include "renderable.h"
+#include "time.h"
 
 OpenGl::OpenGl( OpenGlConfig& openGlConfig, WindowHandle window, unsigned bitsPerPx ) : _openGlConfig( openGlConfig ), _window( window ), _deviceContext( nullptr ), _openGlContext( nullptr )
 {
@@ -39,8 +40,16 @@ OpenGl::OpenGl( OpenGlConfig& openGlConfig, WindowHandle window, unsigned bitsPe
 			// make it the calling thread's current rendering context 
 			if ( wglMakeCurrent( _deviceContext, _openGlContext ) == TRUE )
 			{
-				glewInit( );
-				createContext( bitsPerPx );
+				glewExperimental = GL_TRUE;
+				if ( glewInit( ) != GLEW_OK )
+				{
+					ERR( "Error initializing GLEW." );
+				}
+				else
+				{
+					createContext( bitsPerPx );
+					fillMode( );
+				}
 			}
 		}
 	}
@@ -62,24 +71,92 @@ OpenGl::~OpenGl( )
 		_deviceContext = nullptr;
 	}
 }
+void OpenGl::display( )
+{
+	if ( _deviceContext != nullptr && _openGlContext != nullptr )
+	{
+		SwapBuffers( _deviceContext );
+	}
+}
+void OpenGl::clear( float red, float green, float blue, float alpha )
+{
+	glClearColor( red, green, blue, alpha );
+	glClearDepth( 1.f );
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+}
+void OpenGl::checkGlError( const char *file, int line )
+{
+	GLenum err( glGetError( ) );
+	while ( err != GL_NO_ERROR )
+	{
+		String error;
+		switch ( err )
+		{
+		case GL_INVALID_ENUM:
+			error = "INVALID_ENUM";
+			break;
+		case GL_INVALID_VALUE:
+			error = "INVALID_VALUE";
+			break;
+		case GL_INVALID_OPERATION:
+			error = "INVALID_OPERATION";
+			break;
+		case GL_STACK_OVERFLOW:
+			error = "GL_STACK_OVERFLOW";
+			break;
+		case GL_STACK_UNDERFLOW:
+			error = "GL_STACK_UNDERFLOW";
+			break;
+		case GL_OUT_OF_MEMORY:
+			error = "OUT_OF_MEMORY";
+			break;
+		case GL_INVALID_FRAMEBUFFER_OPERATION:
+			error = "INVALID_FRAMEBUFFER_OPERATION";
+			break;
+		}
+		ERR( "GL_" << error << " - " << file << ":" << line << std::endl );
+		err = glGetError( );
+	}
+}
+void OpenGl::fillMode( )
+{
+	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+	glEnable( GL_DEPTH_TEST );
+	glEnable( GL_CULL_FACE );
+}
+void OpenGl::wireframeMode( )
+{
+	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+	glDisable( GL_DEPTH_TEST );
+	glDisable( GL_CULL_FACE );
+};
+void OpenGl::pointMode( )
+{
+	glPolygonMode( GL_FRONT_AND_BACK, GL_POINT );
+	glDisable( GL_DEPTH_TEST );
+	glDisable( GL_CULL_FACE );
+}
 void OpenGl::createContext( unsigned bitsPerPx )
 {
 	// create a rendering context  
 	PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = reinterpret_cast< PFNWGLCREATECONTEXTATTRIBSARBPROC >( wglGetProcAddress( "wglCreateContextAttribsARB" ) );
 	if ( wglCreateContextAttribsARB )
 	{
-		// get OpenGL version 
-		const char* ver = reinterpret_cast< const char* >( glGetString( GL_VERSION ) );
-		_openGlConfig.majorVersion = ver[0] - '0';
-		// if the major version is 3 or higher we can use glGetIntegerv instead 
-		if ( _openGlConfig.majorVersion >= 3 )
+		// get best OpenGL version if not set
+		if ( _openGlConfig.majorVersion == 0 )
 		{
-			glGetIntegerv( GL_MAJOR_VERSION, &_openGlConfig.majorVersion );
-			glGetIntegerv( GL_MINOR_VERSION, &_openGlConfig.minorVersion );
-		}
-		else
-		{
-			_openGlConfig.minorVersion = ver[2] - '0';
+			const char* ver = reinterpret_cast< const char* >( glGetString( GL_VERSION ) );
+			_openGlConfig.majorVersion = ver[0] - '0';
+			// if the major version is 3 or higher we can use glGetIntegerv instead 
+			if ( _openGlConfig.majorVersion >= 3 )
+			{
+				glGetIntegerv( GL_MAJOR_VERSION, &_openGlConfig.majorVersion );
+				glGetIntegerv( GL_MINOR_VERSION, &_openGlConfig.minorVersion );
+			}
+			else
+			{
+				_openGlConfig.minorVersion = ver[2] - '0';
+			}
 		}
 		int attribList[] =
 		{
@@ -160,17 +237,4 @@ void OpenGl::createContext( unsigned bitsPerPx )
 			}
 		}
 	}
-}
-void OpenGl::display( )
-{
-	if ( _deviceContext != nullptr && _openGlContext != nullptr )
-	{
-		SwapBuffers( _deviceContext );
-	}
-}
-void OpenGl::clear( float red, float green, float blue, float alpha )
-{
-	glClearColor( red, green, blue, alpha );
-	glClearDepth( 1.f );
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }

@@ -2,6 +2,6 @@
 
 struct Time
 {
-	double currentMs;
-	double deltaMs;
+	float currentMs;
+	float deltaMs;
 };

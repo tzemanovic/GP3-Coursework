@@ -16,17 +16,17 @@
 #include <glm/gtc/quaternion.hpp>
 // OpenGL
 #include <GL/gl.h>
-#include <GL/glu.h>
-
-typedef HWND			WindowHandle;
-typedef HDC				DeviceContextHandle;
-typedef HGLRC			OpenGlContextHandle;
-typedef LPCWSTR			String;
-typedef unsigned		GameObjectId;
+//#include <GL/glu.h>
+// assimp - asset import lib
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+// FreeImage - image loading lib
+#include <FreeImage.h>
 
 // IO for quick debugging
 #include <iostream>
-#define DEBUG( x ) do { std::cerr << x; } while ( 0 )
+#define ERR( x ) do { std::cerr << x; } while ( 0 )
 #define LOG( x ) do { std::cout << x; } while ( 0 )
 
 #include <cstdint>
@@ -34,8 +34,15 @@ typedef unsigned		GameObjectId;
 
 #include <memory>
 #include <utility>
+#include <functional>
 
 #include <tuple>
 #include <array>
 #include <queue>
 #include <map>
+
+typedef HWND			WindowHandle;
+typedef HDC				DeviceContextHandle;
+typedef HGLRC			OpenGlContextHandle;
+typedef std::string		String;
+typedef unsigned		GameObjectId;
