@@ -12,7 +12,7 @@ int main( )
 
 	std::shared_ptr< GameObject > g1( new GameObject( ) );
 	g1->translate( glm::vec3( 0.0f, 0.0f, -5.0f ) );
-	g1->setOnUpdate( [&]( GameObject& gameObject, const Time& time )
+	g1->setOnUpdate( []( GameObject& gameObject, const Time& time )
 	{
 		gameObject.setY( std::sinf( time.currentMs * 0.005f ) );
 		gameObject.rotate( glm::vec3( 0.0f, 1.0f, 0.0f ), time.deltaMs * 0.001f );
