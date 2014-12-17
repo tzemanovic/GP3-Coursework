@@ -76,6 +76,10 @@ void Game::run( )
 				{
 					OpenGl::pointMode( );
 				}
+				else
+				{
+					passMessage( msg );
+				}
 			}
 			case InputMessage::Type::KeyUp:
 			case InputMessage::Type::MouseButtonDown:
@@ -83,6 +87,7 @@ void Game::run( )
 			case InputMessage::Type::MouseMove:
 			case InputMessage::Type::MouseWheel:
 			{
+				passMessage( msg );
 				break;
 			}
 			}
@@ -137,5 +142,15 @@ void Game::addSceneNode( std::shared_ptr< SceneNode > sceneNode, RenderPassType 
 	for each( auto view in _views )
 	{
 		view->vAddSceneNode( sceneNode, renderPass );
+	}
+}
+void Game::passMessage( const InputMessage& msg )
+{
+	for each( auto view in _views )
+	{
+		if ( view->vProcessMessage( msg ) )
+		{
+			break;
+		}
 	}
 }

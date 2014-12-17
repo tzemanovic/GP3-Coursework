@@ -5,6 +5,7 @@
 class InputMessage;
 class SceneNode;
 class Game;
+class GameObject;
 struct Time;
 
 class View
@@ -20,5 +21,5 @@ public:
 	virtual void vRender( const Time& time ) = 0;
 	virtual void vUpdate( const Time& time ) = 0;
 	virtual const bool vProcessMessage( const InputMessage& message ) = 0;
-protected:
+	virtual void vOwn( std::shared_ptr< GameObject > owner ) = 0;
 };

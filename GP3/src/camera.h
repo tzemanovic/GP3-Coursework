@@ -2,10 +2,16 @@
 
 #include "sceneNode.h"
 
+class GameObject;
+
 class Camera : public SceneNode
 {
 public:
-	explicit Camera( const float aspectRatio );
+	Camera( );
+public:
+	void setAspectRatio( const float aspectRatio );
+public:
+	virtual void vUpdate( const Scene& scene, const Time& time ) override;
 public:
 	const glm::mat4& getProjection( ) const
 	{
@@ -15,6 +21,16 @@ public:
 	{
 		return _fromWorld;
 	}
+	void setTarget( std::shared_ptr< GameObject > target )
+	{
+		_target = target;
+	}
+	void setOffset( const glm::vec3 offset )
+	{
+		_offset = offset;
+	}
 private:
-	glm::mat4 _projection;
+	glm::mat4 						_projection;
+	glm::vec3 						_offset;
+	std::shared_ptr< GameObject > 	_target;
 };

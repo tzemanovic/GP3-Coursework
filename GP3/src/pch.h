@@ -46,3 +46,7 @@ typedef HDC				DeviceContextHandle;
 typedef HGLRC			OpenGlContextHandle;
 typedef std::string		String;
 typedef unsigned		GameObjectId;
+
+extern const float PI;
+extern const float TWO_PI;
+extern const float HALF_PI;

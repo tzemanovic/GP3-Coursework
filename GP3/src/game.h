@@ -4,8 +4,10 @@
 #include "gameObject.h"
 #include "playerView.h"
 #include "meshComponent.h"
+#include "meshModel.h"
 #include "time.h"
 #include "shader.h"
+#include "controller.h"
 
 class Game
 {
@@ -29,6 +31,7 @@ private:
 	void render( const Time& time );
 	void update( const Time& time );
 	void addSceneNode( std::shared_ptr< SceneNode > sceneNode, RenderPassType renderPass );
+	void passMessage( const InputMessage& msg );
 private:
 	GameObjectId											_lastId;
 	Window*													_window;

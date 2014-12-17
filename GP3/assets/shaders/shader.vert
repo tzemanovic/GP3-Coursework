@@ -14,7 +14,6 @@ out vec3 normal;
 void main()
 {
 	texCoord = inCoord;
-	mat4 worldView = viewMatrix * worldMatrix;
-	gl_Position = projectionMatrix * worldView * vec4(inPosition, 1.0);
-    normal = (worldView * vec4(inNormal, 0.0)).xyz;
+	gl_Position = projectionMatrix * viewMatrix * worldMatrix * vec4(inPosition, 1.0);
+    normal = normalize(worldMatrix * vec4(inNormal, 0.0)).xyz;
 }

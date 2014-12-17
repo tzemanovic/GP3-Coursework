@@ -2,7 +2,7 @@
 #include "scene.h"
 #include "openGl.h"
 
-Scene::Scene( ) : _rootNode( )
+Scene::Scene( ) : _rootNode( ), _ambientLightColor( 0.5f ), _diffuseLightColor( 0.5f ), _lightDirection( 0.0f, 1.0f, 0.0f )
 {
 
 }
@@ -16,7 +16,7 @@ void Scene::render( const Time& time, std::shared_ptr< Camera > camera )
 }
 void Scene::update( const Time& time )
 {
-
+	_rootNode.vUpdate( *this, time );
 }
 void Scene::addSceneNode( std::shared_ptr< SceneNode > sceneNode, RenderPassType renderPass )
 {

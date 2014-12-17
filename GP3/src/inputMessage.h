@@ -112,6 +112,9 @@ enum class Key : unsigned char
 	LAlt = VK_LMENU,
 	RAlt = VK_RMENU
 };
+// covert to uchar to use as array index
+unsigned char operator+ ( Key val );
+
 enum class MouseButton : unsigned char
 {
 	LeftButton = MK_LBUTTON,

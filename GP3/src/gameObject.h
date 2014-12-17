@@ -7,6 +7,8 @@ struct Time;
 
 class GameObject
 {
+	typedef std::function< void( GameObject&, const Time& ) > OnUpdate;
+	typedef std::map< ComponentType, std::shared_ptr< Component > > ComponentMap;
 	friend class Game;
 public:
 	GameObject( );
@@ -47,6 +49,10 @@ public:
 	{
 		_pos += translation;
 	}
+	void translate( const glm::vec4& translation )
+	{
+		_pos += glm::vec3( translation );
+	}
 	const glm::vec3& getPos( ) const
 	{
 		return _pos;
@@ -79,7 +85,7 @@ public:
 	{
 		_rot = glm::rotate( _rot, angle, axis );
 	}
-	void setOnUpdate( std::function< void( GameObject&, const Time& ) > onUpdate )
+	void setOnUpdate( OnUpdate onUpdate )
 	{
 		_onUpdate = onUpdate;
 	}
@@ -93,11 +99,11 @@ private:
 	void setId( const GameObjectId id );
 	void addComponent( std::shared_ptr< Component > component );
 private:
-	glm::vec3												_pos, _scale;
-	glm::quat												_rot;
-	glm::mat4												_transform, _transformNonScaled;
-	GameObjectId 											_id;
-	bool													_fixed;
-	std::function< void( GameObject&, const Time& ) > 		_onUpdate;
-	std::map< ComponentType, std::shared_ptr< Component > > _components;
+	glm::vec3		_pos, _scale;
+	glm::quat		_rot;
+	glm::mat4		_transform, _transformNonScaled;
+	GameObjectId 	_id;
+	bool			_fixed;
+	OnUpdate		_onUpdate;
+	ComponentMap 	_components;
 };

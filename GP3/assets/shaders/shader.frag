@@ -12,5 +12,8 @@ out vec4 outputColor;
 void main()
 {
 	float lambert = max(dot(lightDirection, normal), 0.0);	
-	outputColor = texture2D(gSampler, texCoord) * vec4(ambientLightColor + lambert * diffuseLightColor, 1.0);
+	outputColor = texture2D(gSampler, texCoord) * 
+					vec4(ambientLightColor + 
+						lambert * diffuseLightColor
+						, 1.0);
 }

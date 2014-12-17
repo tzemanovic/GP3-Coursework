@@ -30,15 +30,19 @@ void GameObject::init( Game& game )
 }
 void GameObject::update( const Time& time )
 {
+	if ( _onUpdate != nullptr )
+	{
+		_onUpdate( *this, time );
+	}
 	if ( !_fixed )
 	{
 		_transformNonScaled = glm::translate( glm::mat4( ), _pos );
 		_transformNonScaled = _transformNonScaled * glm::mat4_cast( _rot );
 		_transform = glm::scale( _transformNonScaled, _scale );
 	}
-	if ( _onUpdate != nullptr )
+	for each ( auto component in _components )
 	{
-		_onUpdate( *this, time );
+		component.second->vUpdate( time );
 	}
 }
 void GameObject::addComponent( std::shared_ptr< GameObject > gameObject, std::shared_ptr< Component > component )

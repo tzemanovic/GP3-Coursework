@@ -4,6 +4,7 @@
 
 class GameObject;
 class Game;
+struct Time;
 
 class Component
 {
@@ -12,7 +13,12 @@ public:
 	Component( ComponentType type );
 	virtual ~Component( );
 public:
-	virtual void vInit( Game& game ) {}
+	virtual void vInit( Game& game )
+	{
+	}
+	virtual void vUpdate( const Time& time )
+	{
+	}
 public:
 	ComponentType getType( );
 	std::shared_ptr< GameObject > getOwner( );
