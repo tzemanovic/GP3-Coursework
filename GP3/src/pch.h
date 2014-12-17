@@ -23,6 +23,8 @@
 #include <assimp/postprocess.h>
 // FreeImage - image loading lib
 #include <FreeImage.h>
+// FMOD - sound library
+#include <fmod.hpp>
 
 // IO for quick debugging
 #include <iostream>

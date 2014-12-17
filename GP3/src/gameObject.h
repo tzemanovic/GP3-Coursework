@@ -47,11 +47,14 @@ public:
 	}
 	void translate( const glm::vec3& translation )
 	{
+		_velocity += translation;
 		_pos += translation;
 	}
 	void translate( const glm::vec4& translation )
 	{
-		_pos += glm::vec3( translation );
+		glm::vec3 trans( translation );
+		_velocity += trans;
+		_pos += trans;
 	}
 	const glm::vec3& getPos( ) const
 	{
@@ -72,6 +75,10 @@ public:
 	void setZ( const float z )
 	{
 		_pos.z = z;
+	}
+	const glm::vec3& getVelocity( ) const
+	{
+		return _velocity;
 	}
 	void setScale( const glm::vec3& scale )
 	{
@@ -99,7 +106,7 @@ private:
 	void setId( const GameObjectId id );
 	void addComponent( std::shared_ptr< Component > component );
 private:
-	glm::vec3		_pos, _scale;
+	glm::vec3		_pos, _scale, _velocity;
 	glm::quat		_rot;
 	glm::mat4		_transform, _transformNonScaled;
 	GameObjectId 	_id;

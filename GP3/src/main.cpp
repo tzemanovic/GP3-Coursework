@@ -67,8 +67,11 @@ int main( )
 			gameObject->rotate( glm::vec3( 1.0f, 0.0f, 0.0f ), state.turnUpDownSpeed * deltaS );
 			// multiply translation vector with object's transform matrix to apply the translation in a right direction
 			glm::mat4 transform = gameObject->getTransformNonScaled( );
-			glm::vec4 forward = transform * glm::vec4( 0.0f, 0.0f, -state.speed * deltaS, 0.0f );
-			gameObject->translate( forward );
+			glm::vec4 forward = transform * glm::vec4( 0.0f, 0.0f, -1.0f, 0.0f );
+			glm::vec4 velocity = forward * state.speed * deltaS;
+			glm::vec4 up = transform * glm::vec4( 0.0f, 1.0f, 0.0f, 0.0f );
+			gameObject->translate( velocity );
+			AudioManager::get( )->updateListener( gameObject->getPos( ), glm::vec3( velocity ), glm::vec3( forward ), glm::vec3( up ) );
 		} );
 	}
 
@@ -81,8 +84,12 @@ int main( )
 	spaceship->setScale( 0.003f );
 	MeshModel spaceshipModel( "assets/models/SpaceShuttleOrbiter/SpaceShuttleOrbiter.3ds", game );
 	spaceshipModel.rotateMesh( glm::vec3( 1.0f, 0.0f, 0.0f ), -HALF_PI + 0.1f );
-	std::shared_ptr<MeshComponent> spaceshipMesh( new MeshComponent( spaceshipModel ) );
+	std::shared_ptr< MeshComponent > spaceshipMesh( new MeshComponent( spaceshipModel ) );
 	GameObject::addComponent( spaceship, spaceshipMesh );
+	auto spaceshipAudio = AudioManager::get( )->loadSound( "assets/audio/spaceship.wav", false );
+	std::shared_ptr< AudioComponent > spaceshipAudioComp( new AudioComponent( spaceshipAudio ) );
+	spaceshipAudioComp->play( -1 );
+	GameObject::addComponent( spaceship, spaceshipAudioComp );
 	game.addGameObject( spaceship );
 
 	view->vOwn( spaceship );
@@ -93,6 +100,7 @@ int main( )
 		MeshModel( "assets/models/asteroids/asteroid3.obj", game ),
 		MeshModel( "assets/models/asteroids/asteroid4.obj", game ),
 	};
+	auto asteroidAudio1 = AudioManager::get( )->loadSound( "assets/audio/collision.wav", false );
 	for ( unsigned i = 1; i <= 20; ++i )
 	{
 		std::shared_ptr< GameObject > asteroid( new GameObject( ) );
@@ -109,15 +117,17 @@ int main( )
 			gameObject.rotate( rotAxis, rotation * deltaS );
 			gameObject.translate( movement * deltaS );
 		} );
-		std::shared_ptr<MeshComponent> asteroidMesh( new MeshComponent( asteroidModels[i % 4] ) );
+		std::shared_ptr< MeshComponent > asteroidMesh( new MeshComponent( asteroidModels[i % 4] ) );
 		GameObject::addComponent( asteroid, asteroidMesh );
+		std::shared_ptr< AudioComponent > asteroidAudioComp( new AudioComponent( asteroidAudio1 ) );
+		GameObject::addComponent( asteroid, asteroidAudioComp );
 		game.addGameObject( asteroid );
 	}
 
 	std::shared_ptr< GameObject > skybox( new GameObject( ) );
 	skybox->setScale( 10.0f );
 	SkyboxMeshModel skyboxModel( game );
-	std::shared_ptr<MeshComponent> skyboxMesh( new MeshComponent( skyboxModel ) );
+	std::shared_ptr< MeshComponent > skyboxMesh( new MeshComponent( skyboxModel ) );
 	GameObject::addComponent( skybox, skyboxMesh );
 	game.addGameObject( skybox );
 

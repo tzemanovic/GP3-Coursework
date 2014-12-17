@@ -44,6 +44,7 @@ void GameObject::update( const Time& time )
 	{
 		component.second->vUpdate( time );
 	}
+	_velocity = glm::vec3( );
 }
 void GameObject::addComponent( std::shared_ptr< GameObject > gameObject, std::shared_ptr< Component > component )
 {

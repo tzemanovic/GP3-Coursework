@@ -6,6 +6,8 @@
 #include "meshComponent.h"
 #include "meshModel.h"
 #include "skyboxMeshModel.h"
+#include "audioManager.h"
+#include "audioComponent.h"
 #include "time.h"
 #include "shader.h"
 #include "controller.h"
