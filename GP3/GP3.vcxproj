@@ -140,6 +140,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\shader.cpp" />
+    <ClCompile Include="src\skyboxMeshComponent.cpp" />
+    <ClCompile Include="src\skyboxMeshModel.cpp" />
     <ClCompile Include="src\stringUtils.cpp" />
     <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\view.cpp">
@@ -178,6 +180,8 @@
     <ClInclude Include="src\scene.h" />
     <ClInclude Include="src\sceneNode.h" />
     <ClInclude Include="src\shader.h" />
+    <ClInclude Include="src\skyboxMeshComponent.h" />
+    <ClInclude Include="src\skyboxMeshModel.h" />
     <ClInclude Include="src\stringUtils.h" />
     <ClInclude Include="src\texture.h" />
     <ClInclude Include="src\time.h" />

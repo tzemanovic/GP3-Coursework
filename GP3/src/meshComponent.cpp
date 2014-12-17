@@ -13,7 +13,7 @@ MeshComponent::~MeshComponent( )
 }
 void MeshComponent::vRender( const Scene& scene, const Time& time, std::shared_ptr< Camera > camera, const glm::mat4& toWorld )
 {
-	_model.render( scene, time, camera, toWorld );
+	_model.vRender( scene, time, camera, toWorld );
 }
 void MeshComponent::vInit( Game& game )
 {

@@ -3,10 +3,10 @@
 class Texture
 {
 public:
-	Texture( GLenum textureTarget, const String& filename );
+	Texture( const GLenum textureTarget, const String& filename );
 	~Texture( );
 public:
-	void bind( GLint textureUnit );
+	void bind( const GLint textureUnit );
 private:
 	GLuint _texture;
 	GLuint _sampler;

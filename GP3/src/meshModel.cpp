@@ -55,7 +55,7 @@ MeshModel::Mesh::~Mesh( )
 }
 
 
-MeshModel::MeshModel( String&& filename, const Game& game ) : _filename( filename ), _shaders( nullptr )
+MeshModel::MeshModel( String&& filename, const Game& game, const GLenum texturesTarget ) : _filename( filename ), _shaders( nullptr ), _texturesTarget( texturesTarget )
 {
 	Assimp::Importer importer;
 	importer.SetPropertyFloat( AI_CONFIG_PP_GSN_MAX_SMOOTHING_ANGLE, 80.0f );
@@ -79,7 +79,7 @@ MeshModel::~MeshModel( )
 	}
 	_textures.clear( );
 }
-void MeshModel::render( const Scene& scene, const Time& time, std::shared_ptr< Camera > camera, const glm::mat4& toWorld )
+void MeshModel::vRender( const Scene& scene, const Time& time, std::shared_ptr< Camera > camera, const glm::mat4& toWorld )
 {
 	_shaders->use( );
 	// set camera view and projection matrix
@@ -108,23 +108,6 @@ void MeshModel::render( const Scene& scene, const Time& time, std::shared_ptr< C
 	}
 	glErrorCheck( );
 }
-//void MeshModel::init( Game& game )
-//{
-//	Assimp::Importer importer;
-//	importer.SetPropertyFloat( AI_CONFIG_PP_GSN_MAX_SMOOTHING_ANGLE, 80.0f );
-//	const aiScene* scene = importer.ReadFile( _filename.c_str( ), aiProcess_Triangulate | aiProcess_GenSmoothNormals );
-//	if ( scene != nullptr )
-//	{
-//		load( scene );
-//		_shaders = game.getDefaultShaders( );
-//		std::shared_ptr< SceneNode > sceneNode( new SceneNode( this ) );
-//		game.addSceneNode( sceneNode, RenderPassType::GameObject );
-//	}
-//	else
-//	{
-//		ERR( "Error parsing " << _filename << ". Error message: " << importer.GetErrorString( ) );
-//	}
-//}
 void MeshModel::load( const aiScene* scene )
 {
 	// initalise meshes
@@ -171,6 +154,6 @@ void MeshModel::loadTexture( const aiMaterial* importTexture )
 {
 	aiString path;
 	aiReturn texFound = importTexture->GetTexture( aiTextureType_DIFFUSE, 0, &path );
-	Texture* texture = new Texture( GL_TEXTURE_2D, basePath( _filename ) + path.data );
+	Texture* texture = new Texture( _texturesTarget, basePath( _filename ) + path.data );
 	_textures.push_back( texture );
 }

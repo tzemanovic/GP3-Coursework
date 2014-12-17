@@ -3,7 +3,7 @@
 #include "stringUtils.h"
 #include "openGl.h"
 
-Texture::Texture( GLenum textureTarget, const String& filename ) : _textureTarget( textureTarget ), _filename( filename )
+Texture::Texture( const GLenum textureTarget, const String& filename ) : _textureTarget( textureTarget ), _filename( filename )
 {
 	const char* filenameC = _filename.c_str( );
 	FREE_IMAGE_FORMAT format = FIF_UNKNOWN;
@@ -142,7 +142,7 @@ Texture::~Texture( )
 {
 	glDeleteTextures( 1, &_texture );
 }
-void Texture::bind( GLint textureUnit )
+void Texture::bind( const GLint textureUnit )
 {
 	// select active texture unit
 	glActiveTexture( GL_TEXTURE0 + textureUnit );

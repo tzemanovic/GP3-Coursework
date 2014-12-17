@@ -6,23 +6,18 @@
 #include "time.h"
 #include "openGl.h"
 
-Game::Game( String&& windowName, const WindowConfig& windowConfig, OpenGlConfig& openGlConfig ) : _lastId( 0 ), _window( nullptr ), _vertexShader( nullptr ), _fragmentShader( nullptr ),
-_defaultShaders( nullptr )
+Game::Game( String&& windowName, const WindowConfig& windowConfig, OpenGlConfig& openGlConfig ) : _lastId( 0 ), _window( nullptr ), _defaultShaders( nullptr )
 {
 	// open a window
 	_window = new Window( std::move( windowName ), windowConfig, openGlConfig );
-	_vertexShader = new Shader( "assets/shaders/shader.vert", GL_VERTEX_SHADER );
-	_fragmentShader = new Shader( "assets/shaders/shader.frag", GL_FRAGMENT_SHADER );
+	Shader vertexShader( "assets/shaders/shader.vert", GL_VERTEX_SHADER );
+	Shader fragmentShader( "assets/shaders/shader.frag", GL_FRAGMENT_SHADER );
 	_defaultShaders = new ShaderProgram( );
-	_defaultShaders->addShader( _vertexShader );
-	_defaultShaders->addShader( _fragmentShader );
+	_defaultShaders->addShader( &vertexShader );
+	_defaultShaders->addShader( &fragmentShader );
 }
 Game::~Game( )
 {
-	delete _vertexShader;
-	_vertexShader = nullptr;
-	delete _fragmentShader;
-	_fragmentShader = nullptr;
 	delete _defaultShaders;
 	_defaultShaders = nullptr;
 	if ( _window != nullptr )
@@ -115,6 +110,13 @@ const float Game::windowAspectRatio( ) const
 {
 	return static_cast< float >( _window->getWidth( ) ) / static_cast< float >( _window->getHeight( ) );
 }
+void Game::addSceneNode( std::shared_ptr< SceneNode > sceneNode, RenderPassType renderPass )
+{
+	for each( auto view in _views )
+	{
+		view->vAddSceneNode( sceneNode, renderPass );
+	}
+}
 void Game::render( const Time& time )
 {
 	_window->clear( 0.f, 0.f, 0.f );
@@ -135,13 +137,6 @@ void Game::update( const Time& time )
 	for each ( auto gameObject in _gameObjects )
 	{
 		gameObject.second->update( time );
-	}
-}
-void Game::addSceneNode( std::shared_ptr< SceneNode > sceneNode, RenderPassType renderPass )
-{
-	for each( auto view in _views )
-	{
-		view->vAddSceneNode( sceneNode, renderPass );
 	}
 }
 void Game::passMessage( const InputMessage& msg )

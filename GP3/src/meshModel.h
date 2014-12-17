@@ -11,7 +11,7 @@ struct Time;
 
 class MeshModel
 {
-private:
+protected:
 	struct Mesh
 	{
 	public:
@@ -27,11 +27,10 @@ private:
 	};
 
 public:
-	MeshModel( String&& filename, const Game& game );
-	~MeshModel( );
+	MeshModel( String&& filename, const Game& game, const GLenum texturesTarget = GL_TEXTURE_2D );
+	virtual ~MeshModel( );
 public:
-	void render( const Scene& scene, const Time& time, std::shared_ptr< Camera > camera, const glm::mat4& toWorld );
-	//void init( Game& game );
+	virtual void vRender( const Scene& scene, const Time& time, std::shared_ptr< Camera > camera, const glm::mat4& toWorld );
 public:
 	void setMeshRot( const glm::quat& rot )
 	{
@@ -41,14 +40,15 @@ public:
 	{
 		_meshRot = glm::rotate( _meshRot, angle, axis );
 	}
-private:
+protected:
 	void load( const aiScene* scene );
 	void loadMesh( Mesh& mesh, const aiMesh* importMesh );
 	void loadTexture( const aiMaterial* importTexture );
-private:
+protected:
 	glm::quat 				_meshRot;
 	ShaderProgram* 			_shaders;
 	std::vector<Mesh>		_meshes;
 	std::vector<Texture*>	_textures;
+	GLenum 					_texturesTarget;
 	String 					_filename;
 };

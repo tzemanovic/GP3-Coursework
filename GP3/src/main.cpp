@@ -14,7 +14,7 @@ int main( )
 
 	std::shared_ptr< PlayerView > view( new PlayerView( ) );
 	view->setLightDirection( glm::normalize( glm::vec3( 1.0f, 0.5f, 0.5f ) ) );
-	view->setAmbientLightColor( glm::vec3( 0.075f, 0.1113f, 0.12f ) );
+	view->setAmbientLightColor( glm::vec3( 0.155f, 0.2113f, 0.22f ) );
 	view->setDiffuseLightColor( glm::vec3( 1.0f, 0.9792f, 0.75f ) );
 	view->setCameraOffset( glm::vec3( 0.0f, 1.0f, 5.0f ) );
 
@@ -75,18 +75,17 @@ int main( )
 	view->setController( controller );
 	game.addView( view );
 
-	std::shared_ptr< GameObject > g1( new GameObject( ) );
-	controller->setControlledObject( g1 );
-	g1->translate( glm::vec3( 0.0f, -0.5f, -5.0f ) );
-	g1->setScale( 0.003f );
-	MeshModel g1model( "assets/models/SpaceShuttleOrbiter/SpaceShuttleOrbiter.3ds", game );
-	g1model.rotateMesh( glm::vec3( 1.0f, 0.0f, 0.0f ), -HALF_PI + 0.1f );
-	std::shared_ptr<MeshComponent> g1mesh( new MeshComponent( g1model ) );
-	GameObject::addComponent( g1, g1mesh );
-	game.addGameObject( g1 );
+	std::shared_ptr< GameObject > spaceship( new GameObject( ) );
+	controller->setControlledObject( spaceship );
+	spaceship->translate( glm::vec3( 0.0f, -0.5f, -5.0f ) );
+	spaceship->setScale( 0.003f );
+	MeshModel spaceshipModel( "assets/models/SpaceShuttleOrbiter/SpaceShuttleOrbiter.3ds", game );
+	spaceshipModel.rotateMesh( glm::vec3( 1.0f, 0.0f, 0.0f ), -HALF_PI + 0.1f );
+	std::shared_ptr<MeshComponent> spaceshipMesh( new MeshComponent( spaceshipModel ) );
+	GameObject::addComponent( spaceship, spaceshipMesh );
+	game.addGameObject( spaceship );
 
-	view->vOwn( g1 );
-
+	view->vOwn( spaceship );
 
 	MeshModel asteroidModels[] = {
 		MeshModel( "assets/models/asteroids/asteroid1.obj", game ),
@@ -113,8 +112,14 @@ int main( )
 		std::shared_ptr<MeshComponent> asteroidMesh( new MeshComponent( asteroidModels[i % 4] ) );
 		GameObject::addComponent( asteroid, asteroidMesh );
 		game.addGameObject( asteroid );
-		LOG( i );
 	}
+
+	std::shared_ptr< GameObject > skybox( new GameObject( ) );
+	skybox->setScale( 10.0f );
+	SkyboxMeshModel skyboxModel( game );
+	std::shared_ptr<MeshComponent> skyboxMesh( new MeshComponent( skyboxModel ) );
+	GameObject::addComponent( skybox, skyboxMesh );
+	game.addGameObject( skybox );
 
 	game.run( );
 
