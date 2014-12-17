@@ -32,7 +32,3 @@ const bool PlayerView::vProcessMessage( const InputMessage& message )
 {
 	return false;
 }
-Scene& PlayerView::getScene( )
-{
-	return _scene;
-}

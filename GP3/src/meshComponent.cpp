@@ -66,12 +66,15 @@ MeshComponent::~MeshComponent( )
 	}
 	_textures.clear( );
 }
-void MeshComponent::vRender( const Time& time, std::shared_ptr< Camera > camera, const glm::mat4& toWorld )
+void MeshComponent::vRender( const Scene& scene, const Time& time, std::shared_ptr< Camera > camera, const glm::mat4& toWorld )
 {
 	_shaders->use( );
 	// set camera view and projection matrix
 	_shaders->setProjection( camera->getProjection( ) );
 	_shaders->setView( camera->getView( ) );
+	_shaders->setLightDirection( scene.getLightDirection( ) );
+	_shaders->setAmbientLightColor( scene.getAmbientLightColor( ) );
+	_shaders->setDiffuseLightColor( scene.getDiffuseLightColor( ) );
 	for ( unsigned int i = 0; i < _meshes.size( ); i++ )
 	{
 		// bind vertex array object
@@ -94,8 +97,9 @@ void MeshComponent::vRender( const Time& time, std::shared_ptr< Camera > camera,
 }
 void MeshComponent::vInit( Game& game )
 {
-	Assimp::Importer Importer;
-	const aiScene* scene = Importer.ReadFile( _filename.c_str( ), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs );
+	Assimp::Importer importer;
+	importer.SetPropertyFloat( AI_CONFIG_PP_GSN_MAX_SMOOTHING_ANGLE, 80.0f );
+	const aiScene* scene = importer.ReadFile( _filename.c_str( ), aiProcess_Triangulate | aiProcess_GenSmoothNormals );
 	if ( scene != nullptr )
 	{
 		init( scene );
@@ -105,7 +109,7 @@ void MeshComponent::vInit( Game& game )
 	}
 	else
 	{
-		ERR( "Error parsing " << _filename << ". Error message: " << Importer.GetErrorString( ) );
+		ERR( "Error parsing " << _filename << ". Error message: " << importer.GetErrorString( ) );
 	}
 }
 void MeshComponent::init( const aiScene* scene )

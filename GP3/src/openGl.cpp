@@ -40,7 +40,6 @@ OpenGl::OpenGl( OpenGlConfig& openGlConfig, WindowHandle window, unsigned bitsPe
 			// make it the calling thread's current rendering context 
 			if ( wglMakeCurrent( _deviceContext, _openGlContext ) == TRUE )
 			{
-				glewExperimental = GL_TRUE;
 				if ( glewInit( ) != GLEW_OK )
 				{
 					ERR( "Error initializing GLEW." );

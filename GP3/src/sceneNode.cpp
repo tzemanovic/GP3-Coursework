@@ -35,11 +35,11 @@ const glm::vec3 SceneNode::getWorldPosition( ) const
 	}
 	return pos;
 }
-bool SceneNode::vIsVisible( Scene* scene ) const
+bool SceneNode::vIsVisible( const Scene& scene ) const
 {
 	return true;
 }
-void SceneNode::vPreRender( Scene* scene )
+void SceneNode::vPreRender( const Scene& scene )
 {
 	if ( _renderComponent != nullptr )
 	{
@@ -49,19 +49,19 @@ void SceneNode::vPreRender( Scene* scene )
 		_fromWorld =  glm::inverse( _toWorld );
 	}
 }
-void SceneNode::vRender( Scene* scene, const Time& time, std::shared_ptr< Camera > camera )
+void SceneNode::vRender( const Scene& scene, const Time& time, std::shared_ptr< Camera > camera )
 {
 	if ( _renderComponent != nullptr )
 	{
-		_renderComponent->vRender( time, camera, _toWorld );
+		_renderComponent->vRender( scene, time, camera, _toWorld );
 	}
 	vRenderChildren( scene, time, camera );
 }
-void SceneNode::vPostRender( Scene* scene )
+void SceneNode::vPostRender( const Scene& scene )
 {
 
 }
-void SceneNode::vRenderChildren( Scene* scene, const Time& time, std::shared_ptr< Camera > camera )
+void SceneNode::vRenderChildren( const Scene& scene, const Time& time, std::shared_ptr< Camera > camera )
 {
 	for each ( auto child in _children )
 	{
@@ -74,7 +74,7 @@ void SceneNode::vRenderChildren( Scene* scene, const Time& time, std::shared_ptr
 		}
 	}
 }
-void SceneNode::vUpdate( Scene* scene, const Time& time )
+void SceneNode::vUpdate( const Scene& scene, const Time& time )
 {
 	for ( auto i = _children.begin( ), end = _children.end( ); i != end; ++i )
 	{

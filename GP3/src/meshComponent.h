@@ -29,7 +29,7 @@ public:
 	MeshComponent( String&& filename );
 	virtual ~MeshComponent( );
 public:
-	virtual void vRender( const Time& time, std::shared_ptr< Camera > camera, const glm::mat4& toWorld ) override;
+	virtual void vRender( const Scene& scene, const Time& time, std::shared_ptr< Camera > camera, const glm::mat4& toWorld ) override;
 	virtual void vInit( Game& game ) override;
 private:
 	void init( const aiScene* scene );

@@ -22,7 +22,6 @@ public:
 	void close( );
 	void switchToFullscreen( );
 	bool popMessage( InputMessage& message );
-	void render( const Time& time, Renderable* renderable, std::shared_ptr< Camera > camera );
 	void display( );
 	void clear( float red, float green, float blue, float alpha = 0.f );
 public:

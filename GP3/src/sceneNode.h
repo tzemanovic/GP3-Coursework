@@ -26,12 +26,12 @@ public:
 	const glm::vec3 getPosition( ) const;
 	const glm::vec3 getWorldPosition( ) const;
 public:
-	virtual bool vIsVisible( Scene* scene ) const;
-	virtual void vPreRender( Scene* scene );
-	virtual void vRender( Scene* scene, const Time& time, std::shared_ptr< Camera > camera );
-	virtual void vPostRender( Scene* scene );
-	virtual void vRenderChildren( Scene* scene, const Time& time, std::shared_ptr< Camera > camera );
-	virtual void vUpdate( Scene* scene, const Time& time );
+	virtual bool vIsVisible( const Scene& scene ) const;
+	virtual void vPreRender( const Scene& scene );
+	virtual void vRender( const Scene& scene, const Time& time, std::shared_ptr< Camera > camera );
+	virtual void vPostRender( const Scene& scene );
+	virtual void vRenderChildren( const Scene& scene, const Time& time, std::shared_ptr< Camera > camera );
+	virtual void vUpdate( const Scene& scene, const Time& time );
 protected:
 	GameObjectId								_gameObjectId;
 	SceneNode*									_parent;

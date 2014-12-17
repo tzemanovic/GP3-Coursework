@@ -120,10 +120,6 @@ bool Window::popMessage( InputMessage& message )
 	}
 	return false;
 }
-void Window::render( const Time& time, Renderable* renderable, std::shared_ptr< Camera > camera )
-{
-	renderable->vRender( time, camera );
-}
 void Window::display( )
 {
 	_openGl->display( );

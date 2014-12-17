@@ -1,6 +1,7 @@
 #pragma once
 
 class Camera;
+class Scene;
 struct Time;
 
 class Renderable
@@ -13,5 +14,5 @@ public:
 	{
 	}
 public:
-	virtual void vRender( const Time& time, std::shared_ptr< Camera > camera, const glm::mat4& toWorld = glm::mat4( ) ) = 0;
+	virtual void vRender( const Scene& scene, const Time& time, std::shared_ptr< Camera > camera, const glm::mat4& toWorld = glm::mat4( ) ) = 0;
 };

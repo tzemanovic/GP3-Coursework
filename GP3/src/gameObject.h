@@ -67,6 +67,14 @@ public:
 	{
 		_pos.z = z;
 	}
+	void setScale( const glm::vec3& scale )
+	{
+		_scale = scale;
+	}
+	void setScale( const float scale )
+	{
+		_scale = glm::vec3( scale );
+	}
 	void rotate( const glm::vec3& axis, const float angle )
 	{
 		_rot = glm::rotate( _rot, angle, axis );
@@ -91,6 +99,5 @@ private:
 	GameObjectId 											_id;
 	bool													_fixed;
 	std::function< void( GameObject&, const Time& ) > 		_onUpdate;
-	std::vector< GameObject >								_children;
 	std::map< ComponentType, std::shared_ptr< Component > > _components;
 };

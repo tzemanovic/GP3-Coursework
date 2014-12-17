@@ -3,7 +3,6 @@
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 worldMatrix;
-//uniform mat4 modelViewMatrix;
 
 layout (location = 0) in vec3 inPosition;
 layout (location = 1) in vec3 inNormal;
@@ -14,7 +13,8 @@ out vec3 normal;
 
 void main()
 {
-	gl_Position = projectionMatrix*viewMatrix*worldMatrix*vec4(inPosition, 1.0);
 	texCoord = inCoord;
-    normal = (worldMatrix * vec4(normal, 0.0)).xyz;
+	mat4 worldView = viewMatrix * worldMatrix;
+	gl_Position = projectionMatrix * worldView * vec4(inPosition, 1.0);
+    normal = (worldView * vec4(inNormal, 0.0)).xyz;
 }

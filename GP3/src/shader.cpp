@@ -61,6 +61,33 @@ void ShaderProgram::setWorld( const glm::mat4& world )
 	}
 	glErrorCheck( );
 }
+void ShaderProgram::setAmbientLightColor( const glm::vec3& color )
+{
+	GLint ambientLightColor = glGetUniformLocation( _program, "ambientLightColor" );
+	if ( ambientLightColor != -1 )
+	{
+		glUniform3f( ambientLightColor, color.r, color.g, color.b );
+	}
+	glErrorCheck( );
+}
+void ShaderProgram::setDiffuseLightColor( const glm::vec3& color )
+{
+	GLint diffuseLightColor = glGetUniformLocation( _program, "diffuseLightColor" );
+	if ( diffuseLightColor != -1 )
+	{
+		glUniform3f( diffuseLightColor, color.r, color.g, color.b );
+	}
+	glErrorCheck( );
+}
+void ShaderProgram::setLightDirection( const glm::vec3& dir )
+{
+	GLint lightDirection = glGetUniformLocation( _program, "lightDirection" );
+	if ( lightDirection != -1 )
+	{
+		glUniform3f( lightDirection, dir.x, dir.y, dir.z );
+	}
+	glErrorCheck( );
+}
 void ShaderProgram::setTextureUnit( const unsigned textureUnit )
 {
 	GLint samplerLoc = glGetUniformLocation( _program, "gSampler" );
@@ -102,7 +129,13 @@ Shader::Shader( String&& filename, GLenum type )
 	glGetShaderiv( _shader, GL_COMPILE_STATUS, &compiled );
 	if ( compiled == GL_FALSE )
 	{
-		ERR( "Unable to compile shader " << filename << "." );
+		GLint maxLength = 0;
+		glGetShaderiv( _shader, GL_INFO_LOG_LENGTH, &maxLength );
+		// The maxLength includes the NULL character
+		char* errorLog = new char[maxLength];
+		glGetShaderInfoLog( _shader, maxLength, &maxLength, &errorLog[0] );
+		glDeleteShader( _shader );
+		ERR( "Unable to compile shader " << filename << ". " << errorLog );
 		glErrorCheck( );
 	}
 }
