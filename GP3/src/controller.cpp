@@ -10,6 +10,7 @@ Controller::Controller( )
 }
 const bool Controller::processMessage( const InputMessage& message )
 {
+	// store key and mouse states
 	if ( message == InputMessage::Type::KeyDown )
 	{
 		_keyState[+message.key.type] = true;
@@ -34,5 +35,6 @@ void Controller::update( const Time& time )
 	{
 		_onUpdate( *this, _controlledObject, time );
 	}
+	// keep copy of key states for next frame to be able get around the fact that KeyDown event usually repeats multiple times
 	memcpy( _keyOldState, _keyState, sizeof( _keyOldState ) );
 }

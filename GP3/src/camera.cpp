@@ -15,6 +15,7 @@ void Camera::vUpdate( const Scene& scene, const Time& time )
 {
 	if ( _target != nullptr )
 	{
+		// the camera's position needs get adjusted by its target's transform
 		_toWorld = glm::translate( _target->getTransformNonScaled( ), _offset ) * glm::mat4_cast( _rot );
 		_fromWorld = glm::inverse( _toWorld );
 	}

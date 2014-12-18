@@ -85,6 +85,7 @@ void OpenGl::clear( float red, float green, float blue, float alpha )
 }
 void OpenGl::checkGlError( const char *file, int line )
 {
+	// OpenGL debugging
 	GLenum err( glGetError( ) );
 	while ( err != GL_NO_ERROR )
 	{

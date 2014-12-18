@@ -17,6 +17,7 @@ SkyboxMeshModel::~SkyboxMeshModel( )
 }
 void SkyboxMeshModel::vRender( const Scene& scene, const Time& time, std::shared_ptr< Camera > camera, const glm::mat4& toWorld )
 {
+	// temporarily disable depth buffer and backface culling for skybox, so that nothing goes behind it
 	glDepthMask( GL_FALSE );
 	glDisable( GL_CULL_FACE );
 	MeshModel::vRender( scene, time, camera, toWorld );

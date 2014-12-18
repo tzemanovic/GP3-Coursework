@@ -10,6 +10,7 @@ Game::Game( String&& windowName, const WindowConfig& windowConfig, OpenGlConfig&
 {
 	// open a window
 	_window = new Window( std::move( windowName ), windowConfig, openGlConfig );
+	// load default shaders
 	Shader vertexShader( "assets/shaders/shader.vert", GL_VERTEX_SHADER );
 	Shader fragmentShader( "assets/shaders/shader.frag", GL_FRAGMENT_SHADER );
 	_defaultShaders = new ShaderProgram( );
@@ -143,6 +144,7 @@ void Game::passMessage( const InputMessage& msg )
 {
 	for each( auto view in _views )
 	{
+		// if any view processes the message stop trying to process it any further
 		if ( view->vProcessMessage( msg ) )
 		{
 			break;
