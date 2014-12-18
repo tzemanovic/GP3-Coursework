@@ -4,10 +4,10 @@ struct ControllerConfig
 {
 public:
 	ControllerConfig( )
-		: maxSpeed( 20.0f ),
-		minSpeed( 0.5f ),
-		accel( 5.0f ),
-		decel( 2.0f ),
+		: maxSpeed( 1.0f ),
+		minSpeed( 0.025f ),
+		accel( 0.25f ),
+		decel( 0.01f ),
 		maxTurnRightLeftSpeed( 2.0f ),
 		turnRightLeftAccel( 1.0f ),
 		turnRightLeftDecel( 0.05f ),

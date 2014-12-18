@@ -44,6 +44,7 @@ void PlayerView::vUpdate( const Time& time )
 }
 const bool PlayerView::vProcessMessage( const InputMessage& message )
 {
+	// toggle between cameras when F key is pressed
 	if ( message == InputMessage::Type::KeyUp )
 	{
 		if ( message.key.type == Key::F )

@@ -59,10 +59,13 @@ MeshModel::MeshModel( String&& filename, const Game& game, const GLenum textures
 _maxExtents( -std::numeric_limits< float >::max( ) ), _shaders( nullptr ), _texturesTarget( texturesTarget ), _filename( filename )
 {
 	Assimp::Importer importer;
+	// smooth angles under or equal to 80 degrees
 	importer.SetPropertyFloat( AI_CONFIG_PP_GSN_MAX_SMOOTHING_ANGLE, 80.0f );
+	// read the file
 	const aiScene* scene = importer.ReadFile( _filename.c_str( ), aiProcess_Triangulate | aiProcess_GenSmoothNormals );
 	if ( scene != nullptr )
 	{
+		// if it's not empty load meshes from it
 		load( scene );
 		_shaders = game.getDefaultShaders( );
 	}
@@ -111,14 +114,14 @@ void MeshModel::vRender( const Scene& scene, const Time& time, std::shared_ptr< 
 }
 void MeshModel::load( const aiScene* scene )
 {
-	// initalise meshes
+	// load meshes
 	unsigned meshCount = scene->mNumMeshes;
 	_meshes.resize( meshCount );
 	for ( unsigned i = 0; i < meshCount; ++i )
 	{
 		loadMesh( _meshes[i], scene->mMeshes[i] );
 	}
-	// initialise textures
+	// load textures
 	for ( unsigned i = 0; i < scene->mNumMaterials; ++i )
 	{
 		loadTexture( scene->mMaterials[i] );
@@ -134,12 +137,15 @@ void MeshModel::loadMesh( Mesh& mesh, const aiMesh* importMesh )
 	{
 		const aiVector3D* pos = &( importMesh->mVertices[i] );
 		const aiVector3D* normal = &( importMesh->mNormals[i] );
+		// if there are no texture coords use origin
 		const aiVector3D* texCoord = importMesh->HasTextureCoords( 0 ) ? &( importMesh->mTextureCoords[0][i] ) : &origin;
+		// copy the data into Vertex structure
 		Vertex v{
 			glm::vec3( pos->x, pos->y, pos->z ),
 			glm::vec3( normal->x, normal->y, normal->z ),
 			glm::vec2( texCoord->x, texCoord->y )
 		};
+		// recalculate bounding box extends
 		calcExtents( pos );
 		vertices.push_back( v );
 	}
@@ -150,10 +156,12 @@ void MeshModel::loadMesh( Mesh& mesh, const aiMesh* importMesh )
 		indices.push_back( Face.mIndices[1] );
 		indices.push_back( Face.mIndices[2] );
 	}
+	// initialize mesh with the data
 	mesh.init( vertices, indices );
 }
 void MeshModel::calcExtents( const aiVector3D* pos )
 {
+	// calculates bounding box, we get exteremes for all the axes
 	if ( pos->x < _minExtents.x )
 	{
 		_minExtents.x = pos->x;

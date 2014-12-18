@@ -31,6 +31,7 @@ const glm::vec3 SceneNode::getWorldPosition( ) const
 	glm::vec3 pos = getPosition( );
 	if ( _parent )
 	{
+		// this ensures that when a parent node move, it's children move with it
 		pos += _parent->getWorldPosition( );
 	}
 	return pos;
@@ -43,6 +44,7 @@ void SceneNode::vPreRender( const Scene& scene )
 {
 	if ( _renderComponent != nullptr )
 	{
+		// recalculate transforms before rendering
 		auto gameObject = _renderComponent->getOwner( );
 		_toWorld = gameObject->getTransform( );
 		_toWorldNonScaled = gameObject->getTransformNonScaled( );

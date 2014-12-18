@@ -22,12 +22,14 @@ void GameObject::init( Game& game )
 }
 void GameObject::update( const Time& time )
 {
+	// keep track of time of last collision to be able to prevent more collisions for a specified duration in _collisionTimeoutMs
 	if ( _justCollided )
 	{
 		_lastCollisionMs = time.currentMs;
 		_canCollide = false;
 		_justCollided = false;
 	}
+	// time for collision timeout ran out, can collide again
 	if ( !_canCollide && _lastCollisionMs + _collisionTimeoutMs < time.currentMs )
 	{
 		_canCollide = true;
@@ -46,7 +48,8 @@ void GameObject::update( const Time& time )
 	}
 	else
 	{
-		_pos += _velocity * time.deltaMs * 0.001f;
+		// dynamic game object transform calculations
+		_pos += _velocity;
 		_transformNonScaled = glm::translate( glm::mat4( ), _pos );
 		_transformNonScaled = _transformNonScaled * glm::mat4_cast( _rot );
 		_transform = glm::scale( _transformNonScaled, _scale );

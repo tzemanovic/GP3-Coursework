@@ -25,7 +25,7 @@ void Scene::addSceneNode( std::shared_ptr< SceneNode > sceneNode, RenderPassType
 Scene::RootSceneNode::RootSceneNode( ) : SceneNode( )
 {
 	_children.resize( +RenderPassType::Count );
-
+	// create base scene node for every RenderPassType
 	std::shared_ptr< SceneNode > firstGroup( new SceneNode( ) );
 	_children[+RenderPassType::First] = firstGroup;
 	std::shared_ptr< SceneNode > skyGroup( new SceneNode( ) );

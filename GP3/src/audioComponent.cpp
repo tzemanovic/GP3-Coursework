@@ -44,6 +44,7 @@ void AudioComponent::vUpdate( const Time& time )
 {
 	if ( _sound != nullptr && _channel != nullptr )
 	{
+		// update channel's attributes
 		const glm::vec3 position = _owner->getPos( );
 		const glm::vec3 velocity = _owner->getVelocity( );
 		FMOD_VECTOR pos{ position.x, position.y, position.z };
