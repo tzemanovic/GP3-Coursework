@@ -8,12 +8,12 @@ public:
 		minSpeed( 0.5f ),
 		accel( 5.0f ),
 		decel( 2.0f ),
-		maxTurnRightLeftSpeed( 1.0f ),
-		turnRightLeftAccel( 10.0f ),
-		turnRightLeftDecel( 0.1f ),
-		maxTurnUpDownSpeed( 1.0f ),
-		turnUpDownAccel( 10.0f ),
-		turnUpDownDecel( 0.1f )
+		maxTurnRightLeftSpeed( 2.0f ),
+		turnRightLeftAccel( 1.0f ),
+		turnRightLeftDecel( 0.05f ),
+		maxTurnUpDownSpeed( 2.0f ),
+		turnUpDownAccel( 1.0f ),
+		turnUpDownDecel( 0.05f )
 	{
 	}
 public:
@@ -34,4 +34,5 @@ struct ControllerState
 	float speed;
 	float turnRightLeftSpeed;
 	float turnUpDownSpeed;
+	bool isFirstPerson;
 };

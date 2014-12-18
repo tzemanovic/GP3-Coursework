@@ -21,3 +21,4 @@ GP3/ipch/**
 *.app
 *.opensdf
 *.db
+/GP3/fmod.log

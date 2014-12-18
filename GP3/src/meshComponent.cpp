@@ -19,4 +19,5 @@ void MeshComponent::vInit( Game& game )
 {
 	std::shared_ptr< SceneNode > sceneNode( new SceneNode( this ) );
 	game.addSceneNode( sceneNode, RenderPassType::GameObject );
+	_owner->setRadius( _model.getRadius( _owner->getScale( ) ) );
 }

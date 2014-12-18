@@ -40,12 +40,22 @@ public:
 	{
 		_meshRot = glm::rotate( _meshRot, angle, axis );
 	}
+	const float getRadius( const glm::vec3& scale ) const
+	{
+		return std::cbrt(
+			std::pow( ( _maxExtents.x - _minExtents.x ) * scale.x, 2 ) +
+			std::pow( ( _maxExtents.y - _minExtents.y ) * scale.y, 2 ) +
+			std::pow( ( _maxExtents.z - _minExtents.z ) * scale.z, 2 ) );
+	}
 protected:
 	void load( const aiScene* scene );
 	void loadMesh( Mesh& mesh, const aiMesh* importMesh );
+	void calcExtents( const aiVector3D* pos );
 	void loadTexture( const aiMaterial* importTexture );
 protected:
 	glm::quat 				_meshRot;
+	glm::vec3 				_minExtents;
+	glm::vec3 				_maxExtents;
 	ShaderProgram* 			_shaders;
 	std::vector<Mesh>		_meshes;
 	std::vector<Texture*>	_textures;

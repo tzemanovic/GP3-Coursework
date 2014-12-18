@@ -1,25 +1,17 @@
 #include "pch.h"
 #include "gameObject.h"
 #include "component.h"
+#include "meshComponent.h"
+#include "time.h"
 #include <glm/gtc/matrix_transform.hpp>
 
-GameObject::GameObject( ) : _pos( ), _scale( 1.f ), _rot( ), _transform( ), _transformNonScaled( ), _fixed( false )
+GameObject::GameObject( ) : _pos( ), _scale( 1.f ), _rot( ), _transform( ), _transformNonScaled( ), _fixed( false ), _canCollide( true )
 {
 
 }
 GameObject::~GameObject( )
 {
 
-}
-template< class TComponent > std::weak_ptr< TComponent > GameObject::getComponent( ComponentType type )
-{
-	// return weak_ptr to avoid circular reference
-	auto componentPair = _components.find( type );
-	if ( componentPair != _components.end( ) )
-	{
-		return std::static_pointer_cast< TComponent >( componentPair->second );
-	}
-	return std::weak_ptr< TComponent >( );
 }
 void GameObject::init( Game& game )
 {
@@ -30,21 +22,51 @@ void GameObject::init( Game& game )
 }
 void GameObject::update( const Time& time )
 {
+	if ( _justCollided )
+	{
+		_lastCollisionMs = time.currentMs;
+		_canCollide = false;
+		_justCollided = false;
+	}
+	if ( !_canCollide && _lastCollisionMs + _collisionTimeoutMs < time.currentMs )
+	{
+		_canCollide = true;
+	}
+	// call update callback
 	if ( _onUpdate != nullptr )
 	{
 		_onUpdate( *this, time );
 	}
-	if ( !_fixed )
+	// update transform
+	if ( _fixed )
 	{
+		// fixed game object ignores velocity and rotation
+		_transformNonScaled = glm::translate( glm::mat4( ), _pos );
+		_transform = glm::scale( _transformNonScaled, _scale );
+	}
+	else
+	{
+		_pos += _velocity * time.deltaMs * 0.001f;
 		_transformNonScaled = glm::translate( glm::mat4( ), _pos );
 		_transformNonScaled = _transformNonScaled * glm::mat4_cast( _rot );
 		_transform = glm::scale( _transformNonScaled, _scale );
 	}
+	// update components
 	for each ( auto component in _components )
 	{
 		component.second->vUpdate( time );
 	}
-	_velocity = glm::vec3( );
+}
+const bool GameObject::sphereSphereCollision( GameObject& other )
+{
+	// check if their distance is smaller than the sum of radii of their bounding spheres
+	if ( _canCollide && other.canCollide( ) )
+	{
+		_justCollided = glm::distance( _pos, other.getPos( ) ) < getRadius( ) + other.getRadius( );
+		other.setJustCollided( _justCollided );
+		return _justCollided;
+	}
+	return false;
 }
 void GameObject::addComponent( std::shared_ptr< GameObject > gameObject, std::shared_ptr< Component > component )
 {

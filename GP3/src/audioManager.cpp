@@ -87,12 +87,12 @@ void AudioManager::update( )
 	}
 }
 // Load sound, should it be a streaming sound
-FMOD::Sound* AudioManager::loadSound( String&& filename, bool stream )
+FMOD::Sound* AudioManager::loadSound( String&& filename, bool stream, bool isLooped, bool is3D )
 {
 	// load or stream sound
 	FMOD_RESULT result;
 	FMOD::Sound* sound;
-	FMOD_MODE mode = FMOD_DEFAULT;
+	FMOD_MODE mode = ( is3D ? FMOD_3D : FMOD_2D ) | ( isLooped ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF ) | FMOD_HARDWARE;
 	if ( stream )
 	{
 		result = _audioSystem->createSound( filename.c_str( ), mode, 0, &sound );
@@ -103,6 +103,7 @@ FMOD::Sound* AudioManager::loadSound( String&& filename, bool stream )
 	}
 	return sound;
 }
+// Number of times to loop before stopping. 0 = oneshot. 1 = loop once then stop. -1 = loop forever. Default = -1 
 FMOD::Channel* AudioManager::playSound( FMOD::Sound* sound, const int loopCount )
 {
 	// play sound, return a channel so we can control the sound while its playing

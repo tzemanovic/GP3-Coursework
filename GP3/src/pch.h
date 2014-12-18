@@ -37,6 +37,7 @@
 #include <memory>
 #include <utility>
 #include <functional>
+#include <limits>
 
 #include <tuple>
 #include <array>

@@ -34,4 +34,5 @@ void Controller::update( const Time& time )
 	{
 		_onUpdate( *this, _controlledObject, time );
 	}
+	memcpy( _keyOldState, _keyState, sizeof( _keyOldState ) );
 }

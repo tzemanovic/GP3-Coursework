@@ -34,8 +34,8 @@ void MeshModel::Mesh::init( const std::vector<Vertex>& vertices, const std::vect
 	glErrorCheck( );
 	// define vertex attributes
 	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( Vertex ), 0 );
-	glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, sizeof( Vertex ), ( const GLvoid* ) 12 );
-	glVertexAttribPointer( 2, 2, GL_FLOAT, GL_FALSE, sizeof( Vertex ), ( const GLvoid* ) 24 );
+	glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, sizeof( Vertex ), (const GLvoid*) 12 );
+	glVertexAttribPointer( 2, 2, GL_FLOAT, GL_FALSE, sizeof( Vertex ), (const GLvoid*) 24 );
 	glErrorCheck( );
 }
 MeshModel::Mesh::~Mesh( )
@@ -55,7 +55,8 @@ MeshModel::Mesh::~Mesh( )
 }
 
 
-MeshModel::MeshModel( String&& filename, const Game& game, const GLenum texturesTarget ) : _filename( filename ), _shaders( nullptr ), _texturesTarget( texturesTarget )
+MeshModel::MeshModel( String&& filename, const Game& game, const GLenum texturesTarget ) : _minExtents( std::numeric_limits< float >::max( ) ),
+_maxExtents( -std::numeric_limits< float >::max( ) ), _shaders( nullptr ), _texturesTarget( texturesTarget ), _filename( filename )
 {
 	Assimp::Importer importer;
 	importer.SetPropertyFloat( AI_CONFIG_PP_GSN_MAX_SMOOTHING_ANGLE, 80.0f );
@@ -131,14 +132,15 @@ void MeshModel::loadMesh( Mesh& mesh, const aiMesh* importMesh )
 	const aiVector3D origin;
 	for ( unsigned i = 0; i < importMesh->mNumVertices; ++i )
 	{
-		const aiVector3D* pPos = &( importMesh->mVertices[i] );
-		const aiVector3D* pNormal = &( importMesh->mNormals[i] );
-		const aiVector3D* pTexCoord = importMesh->HasTextureCoords( 0 ) ? &( importMesh->mTextureCoords[0][i] ) : &origin;
+		const aiVector3D* pos = &( importMesh->mVertices[i] );
+		const aiVector3D* normal = &( importMesh->mNormals[i] );
+		const aiVector3D* texCoord = importMesh->HasTextureCoords( 0 ) ? &( importMesh->mTextureCoords[0][i] ) : &origin;
 		Vertex v{
-			glm::vec3( pPos->x, pPos->y, pPos->z ),
-			glm::vec3( pNormal->x, pNormal->y, pNormal->z ),
-			glm::vec2( pTexCoord->x, pTexCoord->y )
+			glm::vec3( pos->x, pos->y, pos->z ),
+			glm::vec3( normal->x, normal->y, normal->z ),
+			glm::vec2( texCoord->x, texCoord->y )
 		};
+		calcExtents( pos );
 		vertices.push_back( v );
 	}
 	for ( unsigned int i = 0; i < importMesh->mNumFaces; ++i )
@@ -149,6 +151,33 @@ void MeshModel::loadMesh( Mesh& mesh, const aiMesh* importMesh )
 		indices.push_back( Face.mIndices[2] );
 	}
 	mesh.init( vertices, indices );
+}
+void MeshModel::calcExtents( const aiVector3D* pos )
+{
+	if ( pos->x < _minExtents.x )
+	{
+		_minExtents.x = pos->x;
+	}
+	if ( pos->y < _minExtents.y )
+	{
+		_minExtents.y = pos->y;
+	}
+	if ( pos->z < _minExtents.z )
+	{
+		_minExtents.z = pos->z;
+	}
+	if ( pos->x > _maxExtents.x )
+	{
+		_maxExtents.x = pos->x;
+	}
+	if ( pos->y > _maxExtents.y )
+	{
+		_maxExtents.y = pos->y;
+	}
+	if ( pos->z > _maxExtents.z )
+	{
+		_maxExtents.z = pos->z;
+	}
 }
 void MeshModel::loadTexture( const aiMaterial* importTexture )
 {

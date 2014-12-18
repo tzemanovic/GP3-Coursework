@@ -17,10 +17,34 @@ public:
 	WindowConfig( WindowConfig&& ) = delete;
 	const WindowConfig& operator=( WindowConfig&& ) = delete;
 public:
-	unsigned getWidth( ) const;
-	unsigned getHeight( ) const;
-	unsigned getBitsPerPx( ) const;
-	WindowStyle getWindowStyle( ) const;
+	const unsigned getWidth( ) const
+	{
+		return _width;
+	}
+	void setWidth( const unsigned width )
+	{
+		_width = width;
+	}
+	const unsigned getHeight( ) const
+	{
+		return _height;
+	}
+	void setHeight( const unsigned height )
+	{
+		_height = height;
+	}
+	const unsigned getBitsPerPx( ) const
+	{
+		return _bitsPerPx;
+	}
+	const WindowStyle getWindowStyle( ) const
+	{
+		return _windowStyle;
+	}
+	void setWindowStyle( const WindowStyle style )
+	{
+		_windowStyle = style;
+	}
 private:
 	unsigned		_width;
 	unsigned		_height;

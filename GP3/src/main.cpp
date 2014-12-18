@@ -2,28 +2,31 @@
 #include "game.h"
 #include "controllerConfig.h"
 
-float randf( float a, float b )
-{
-	return ( ( b - a )*( ( float ) rand( ) / RAND_MAX ) ) + a;
-}
-
+float randf( float a, float b );
+void spawnAsteroid( Game& game, MeshModel& model, std::shared_ptr< GameObject > spaceship, FMOD::Sound* asteroidAudio, const glm::vec3 pos, const glm::vec3 vel,
+	const float scale );
 int main( )
 {
 	WindowConfig windowConfig;
+	windowConfig.setWindowStyle( WindowStyle::Fullscreen );
 	Game game( "GP3 coursework", windowConfig );
 
 	std::shared_ptr< PlayerView > view( new PlayerView( ) );
 	view->setLightDirection( glm::normalize( glm::vec3( 1.0f, 0.5f, 0.5f ) ) );
 	view->setAmbientLightColor( glm::vec3( 0.155f, 0.2113f, 0.22f ) );
 	view->setDiffuseLightColor( glm::vec3( 1.0f, 0.9792f, 0.75f ) );
-	view->setCameraOffset( glm::vec3( 0.0f, 1.0f, 5.0f ) );
+	const glm::vec3 thirdPersonCamOffset = glm::vec3( 0.0f, 1.0f, 5.0f );
+	const glm::vec3 firstPersonCamOffset = glm::vec3( 0.0f, 0.42f, -2.0f );
+	view->setCameraOffset( thirdPersonCamOffset );
 
 	std::shared_ptr< Controller > controller( new Controller( ) );
 	{
 		ControllerConfig config;
 		ControllerState state;
 		state.speed = config.maxSpeed;
-		controller->setOnUpdate( [&config, &state]( const Controller& controller, std::shared_ptr< GameObject > gameObject, const Time& time )
+		state.isFirstPerson = false;
+		controller->setOnUpdate( [&config, &state, &view, &thirdPersonCamOffset, &firstPersonCamOffset]
+			( const Controller& controller, std::shared_ptr< GameObject > gameObject, const Time& time )
 		{
 			float deltaS = time.deltaMs * 0.001f;
 			if ( controller.getKeyState( Key::E ) )
@@ -58,6 +61,18 @@ int main( )
 			{
 				state.turnUpDownSpeed -= config.turnUpDownDecel * state.turnUpDownSpeed;
 			}
+			if ( controller.getKeyState( Key::G ) && !controller.getOldKeyState( Key::G ) )
+			{
+				if ( state.isFirstPerson )
+				{
+					view->setCameraOffset( thirdPersonCamOffset );
+				}
+				else
+				{
+					view->setCameraOffset( firstPersonCamOffset );
+				}
+				state.isFirstPerson = !state.isFirstPerson;
+			}
 			// clamp values
 			state.speed = glm::clamp( state.speed, config.minSpeed, config.maxSpeed );
 			state.turnRightLeftSpeed = glm::clamp( state.turnRightLeftSpeed, -config.maxTurnRightLeftSpeed, config.maxTurnRightLeftSpeed );
@@ -67,11 +82,11 @@ int main( )
 			gameObject->rotate( glm::vec3( 1.0f, 0.0f, 0.0f ), state.turnUpDownSpeed * deltaS );
 			// multiply translation vector with object's transform matrix to apply the translation in a right direction
 			glm::mat4 transform = gameObject->getTransformNonScaled( );
-			glm::vec4 forward = transform * glm::vec4( 0.0f, 0.0f, -1.0f, 0.0f );
-			glm::vec4 velocity = forward * state.speed * deltaS;
-			glm::vec4 up = transform * glm::vec4( 0.0f, 1.0f, 0.0f, 0.0f );
-			gameObject->translate( velocity );
-			AudioManager::get( )->updateListener( gameObject->getPos( ), glm::vec3( velocity ), glm::vec3( forward ), glm::vec3( up ) );
+			glm::vec3 forward = glm::vec3( transform * glm::vec4( 0.0f, 0.0f, -1.0f, 0.0f ) );
+			glm::vec3 velocity = forward * state.speed;
+			glm::vec3 up = glm::vec3( transform * glm::vec4( 0.0f, 1.0f, 0.0f, 0.0f ) );
+			gameObject->setVelocity( velocity );
+			AudioManager::get( )->updateListener( gameObject->getPos( ), velocity, forward, up );
 		} );
 	}
 
@@ -80,13 +95,13 @@ int main( )
 
 	std::shared_ptr< GameObject > spaceship( new GameObject( ) );
 	controller->setControlledObject( spaceship );
-	spaceship->translate( glm::vec3( 0.0f, -0.5f, -5.0f ) );
+	spaceship->setPos( glm::vec3( 0.0f, -0.5f, -5.0f ) );
 	spaceship->setScale( 0.003f );
 	MeshModel spaceshipModel( "assets/models/SpaceShuttleOrbiter/SpaceShuttleOrbiter.3ds", game );
 	spaceshipModel.rotateMesh( glm::vec3( 1.0f, 0.0f, 0.0f ), -HALF_PI + 0.1f );
 	std::shared_ptr< MeshComponent > spaceshipMesh( new MeshComponent( spaceshipModel ) );
 	GameObject::addComponent( spaceship, spaceshipMesh );
-	auto spaceshipAudio = AudioManager::get( )->loadSound( "assets/audio/spaceship.wav", false );
+	auto spaceshipAudio = AudioManager::get( )->loadSound( "assets/audio/spaceship.wav", false, true );
 	std::shared_ptr< AudioComponent > spaceshipAudioComp( new AudioComponent( spaceshipAudio ) );
 	spaceshipAudioComp->play( -1 );
 	GameObject::addComponent( spaceship, spaceshipAudioComp );
@@ -100,28 +115,15 @@ int main( )
 		MeshModel( "assets/models/asteroids/asteroid3.obj", game ),
 		MeshModel( "assets/models/asteroids/asteroid4.obj", game ),
 	};
-	auto asteroidAudio1 = AudioManager::get( )->loadSound( "assets/audio/collision.wav", false );
-	for ( unsigned i = 1; i <= 20; ++i )
+	auto asteroidAudio = AudioManager::get( )->loadSound( "assets/audio/collision.wav", false );
+	std::vector<std::shared_ptr< GameObject > > asteroids;
+	for ( unsigned i = 1; i <= 30; ++i )
 	{
-		std::shared_ptr< GameObject > asteroid( new GameObject( ) );
-		float offset = static_cast< float >( i );
-		asteroid->translate( glm::vec3( randf( -50.0f, 50.0f ), randf( -50.0f, 50.0f ), randf( -50.0f, 50.0f ) ) );
-		asteroid->setScale( randf( 0.04f, 0.1f ) );
-		asteroid->rotate( glm::vec3( 1.0f, 1.0f, 0.0f ), randf( -PI, PI ) );
-		glm::vec3 movement( randf( -5.0f, 5.0f ), randf( -5.0f, 5.0f ), randf( -5.0f, 5.0f ) );
-		glm::vec3 rotAxis = glm::normalize( glm::vec3( randf( 0.0f, 1.0f ), randf( 0.0f, 1.0f ), randf( 0.0f, 1.0f ) ) );
-		float rotation = randf( -1.0f, 1.0f );
-		asteroid->setOnUpdate( [&movement, &rotAxis, rotation]( GameObject& gameObject, const Time& time )
-		{
-			float deltaS = time.deltaMs * 0.001f;
-			gameObject.rotate( rotAxis, rotation * deltaS );
-			gameObject.translate( movement * deltaS );
-		} );
-		std::shared_ptr< MeshComponent > asteroidMesh( new MeshComponent( asteroidModels[i % 4] ) );
-		GameObject::addComponent( asteroid, asteroidMesh );
-		std::shared_ptr< AudioComponent > asteroidAudioComp( new AudioComponent( asteroidAudio1 ) );
-		GameObject::addComponent( asteroid, asteroidAudioComp );
-		game.addGameObject( asteroid );
+		const float posOffset = 100.0f;
+		auto pos = glm::vec3( randf( -posOffset, posOffset ), randf( -posOffset, posOffset ), randf( -posOffset, posOffset ) );
+		const static float velOffset = 1.0f;
+		auto vel = glm::vec3( randf( -velOffset, velOffset ), randf( -velOffset, velOffset ), randf( -velOffset, velOffset ) );
+		spawnAsteroid( game, asteroidModels[i % 4], spaceship, asteroidAudio, pos, vel, randf( 0.1f, 0.4f ) );
 	}
 
 	std::shared_ptr< GameObject > skybox( new GameObject( ) );
@@ -134,4 +136,45 @@ int main( )
 	game.run( );
 
 	return 0;
+}
+float randf( float a, float b )
+{
+	return ( ( b - a )*( (float) rand( ) / RAND_MAX ) ) + a;
+}
+void spawnAsteroid( Game& game, MeshModel& model, std::shared_ptr< GameObject > spaceship, FMOD::Sound* asteroidAudio, const glm::vec3 pos, const glm::vec3 vel,
+	const float scale )
+{
+	std::shared_ptr< GameObject > asteroid( new GameObject( ) );
+	asteroid->setPos( pos );
+	asteroid->setScale( scale );
+	asteroid->rotate( glm::vec3( 1.0f, 1.0f, 0.0f ), randf( -PI, PI ) );
+	asteroid->setCollisionTimeoutMs( 1000.0f );
+	asteroid->setJustCollided( );
+	asteroid->setVelocity( vel * -1.0f );
+	glm::vec3 rotAxis = glm::normalize( glm::vec3( randf( 0.0f, 1.0f ), randf( 0.0f, 1.0f ), randf( 0.0f, 1.0f ) ) );
+	const float rotation = randf( -1.0f, 1.0f );
+	asteroid->setOnUpdate( [&game, &model, spaceship, asteroidAudio, rotAxis, rotation]( GameObject& gameObject, const Time& time )
+	{
+		const float deltaS = time.deltaMs * 0.001f;
+		gameObject.rotate( rotAxis, rotation * deltaS );
+		// check for collision with spaceship
+		if ( spaceship->sphereSphereCollision( gameObject ) )
+		{
+			const float scale = gameObject.getScale( ).x;
+			if ( scale > 0.01f )
+			{
+				auto audio = gameObject.getComponent< AudioComponent >( ComponentType::Audio ).lock( );
+				audio->play( 0, 0.8f );
+				gameObject.scale( 0.5f );
+				gameObject.setVelocity( gameObject.getVelocity( ) + spaceship->getVelocity( ) * 0.1f );
+				gameObject.setScale( gameObject.getScale( ).x * 0.5f );
+				spawnAsteroid( game, model, spaceship, asteroidAudio, gameObject.getPos( ), gameObject.getVelocity( ), scale * 0.5f );
+			}
+		}
+	} );
+	std::shared_ptr< MeshComponent > asteroidMesh( new MeshComponent( model ) );
+	GameObject::addComponent( asteroid, asteroidMesh );
+	std::shared_ptr< AudioComponent > asteroidAudioComp( new AudioComponent( asteroidAudio ) );
+	GameObject::addComponent( asteroid, asteroidAudioComp );
+	game.addGameObject( asteroid );
 }
