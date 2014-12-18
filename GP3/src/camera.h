@@ -25,12 +25,17 @@ public:
 	{
 		_target = target;
 	}
-	void setOffset( const glm::vec3 offset )
+	void setOffset( const glm::vec3& offset )
 	{
 		_offset = offset;
+	}
+	void setRotation( const glm::quat& rot )
+	{
+		_rot = rot;
 	}
 private:
 	glm::mat4 						_projection;
 	glm::vec3 						_offset;
+	glm::quat 						_rot;
 	std::shared_ptr< GameObject > 	_target;
 };

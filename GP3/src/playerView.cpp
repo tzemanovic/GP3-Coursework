@@ -18,6 +18,10 @@ void PlayerView::setCameraOffset( const glm::vec3& offset )
 {
 	_camera->setOffset( offset );
 }
+void PlayerView::setCameraRotation( const glm::quat& rot )
+{
+	_camera->setRotation( rot );
+}
 void PlayerView::vInit( Game& game )
 {
 	_camera->setAspectRatio( game.windowAspectRatio( ) );

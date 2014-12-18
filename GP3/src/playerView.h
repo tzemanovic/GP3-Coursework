@@ -14,6 +14,7 @@ public:
 	PlayerView& operator=( const PlayerView& ) = delete;
 public:
 	void setCameraOffset( const glm::vec3& offset );
+	void setCameraRotation( const glm::quat& rot );
 public:
 	void setAmbientLightColor( const glm::vec3& color )
 	{

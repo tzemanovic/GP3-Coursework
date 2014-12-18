@@ -16,16 +16,19 @@ int main( )
 	view->setAmbientLightColor( glm::vec3( 0.155f, 0.2113f, 0.22f ) );
 	view->setDiffuseLightColor( glm::vec3( 1.0f, 0.9792f, 0.75f ) );
 	const glm::vec3 thirdPersonCamOffset = glm::vec3( 0.0f, 1.0f, 5.0f );
-	const glm::vec3 firstPersonCamOffset = glm::vec3( 0.0f, 0.42f, -2.0f );
+	const glm::vec3 birdsEyeCamOffset = glm::vec3( 0.0f, 15.0f, 12.0f );
+	const glm::quat thirdPersonCamRot = glm::rotate( glm::quat( ), 0.0f, glm::vec3( 1.0f, 0.0f, 0.0f ) );
+	const glm::quat birdsEyeCamRot = glm::rotate( glm::quat( ), -HALF_PI + 1.0f, glm::vec3( 1.0f, 0.0f, 0.0f ) );
 	view->setCameraOffset( thirdPersonCamOffset );
+	view->setCameraRotation( thirdPersonCamRot );
 
 	std::shared_ptr< Controller > controller( new Controller( ) );
 	{
 		ControllerConfig config;
 		ControllerState state;
 		state.speed = config.maxSpeed;
-		state.isFirstPerson = false;
-		controller->setOnUpdate( [&config, &state, &view, &thirdPersonCamOffset, &firstPersonCamOffset]
+		state.isBirdsEye = false;
+		controller->setOnUpdate( [&config, &state, &view, &thirdPersonCamOffset, &thirdPersonCamRot, &birdsEyeCamOffset, &birdsEyeCamRot]
 			( const Controller& controller, std::shared_ptr< GameObject > gameObject, const Time& time )
 		{
 			float deltaS = time.deltaMs * 0.001f;
@@ -63,15 +66,17 @@ int main( )
 			}
 			if ( controller.getKeyState( Key::G ) && !controller.getOldKeyState( Key::G ) )
 			{
-				if ( state.isFirstPerson )
+				if ( state.isBirdsEye )
 				{
 					view->setCameraOffset( thirdPersonCamOffset );
+					view->setCameraRotation( thirdPersonCamRot );
 				}
 				else
 				{
-					view->setCameraOffset( firstPersonCamOffset );
+					view->setCameraOffset( birdsEyeCamOffset );
+					view->setCameraRotation( birdsEyeCamRot );
 				}
-				state.isFirstPerson = !state.isFirstPerson;
+				state.isBirdsEye = !state.isBirdsEye;
 			}
 			// clamp values
 			state.speed = glm::clamp( state.speed, config.minSpeed, config.maxSpeed );
@@ -164,7 +169,7 @@ void spawnAsteroid( Game& game, MeshModel& model, std::shared_ptr< GameObject > 
 			if ( scale > 0.01f )
 			{
 				auto audio = gameObject.getComponent< AudioComponent >( ComponentType::Audio ).lock( );
-				audio->play( 0, 0.8f );
+				audio->play( 0, 0.6f );
 				gameObject.scale( 0.5f );
 				gameObject.setVelocity( gameObject.getVelocity( ) + spaceship->getVelocity( ) * 0.1f );
 				gameObject.setScale( gameObject.getScale( ).x * 0.5f );

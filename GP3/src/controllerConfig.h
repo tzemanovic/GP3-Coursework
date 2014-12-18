@@ -34,5 +34,5 @@ struct ControllerState
 	float speed;
 	float turnRightLeftSpeed;
 	float turnUpDownSpeed;
-	bool isFirstPerson;
+	bool isBirdsEye;
 };
