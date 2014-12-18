@@ -78,6 +78,10 @@ int main( )
 				}
 				state.isBirdsEye = !state.isBirdsEye;
 			}
+			if ( controller.getKeyState( Key::H ) && !controller.getOldKeyState( Key::H ) )
+			{
+				AudioManager::get( )->toggleSound( );
+			}
 			// clamp values
 			state.speed = glm::clamp( state.speed, config.minSpeed, config.maxSpeed );
 			state.turnRightLeftSpeed = glm::clamp( state.turnRightLeftSpeed, -config.maxTurnRightLeftSpeed, config.maxTurnRightLeftSpeed );

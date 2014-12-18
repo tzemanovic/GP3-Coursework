@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "audioManager.h"
 
-AudioManager::AudioManager( ) : _audioSystem( nullptr )
+AudioManager::AudioManager( ) : _audioSystem( nullptr ), _muted( false )
 {
 	// This setup is directly taken from the Getting Started with FMOD for Windows
 	// Page 8 titled - Recommended startup sequence (IMPORTANT!)
@@ -110,6 +110,7 @@ FMOD::Channel* AudioManager::playSound( FMOD::Sound* sound, const int loopCount 
 	FMOD::Channel* channel;
 	_audioSystem->playSound( FMOD_CHANNEL_FREE, sound, false, &channel );
 	channel->setLoopCount( loopCount );
+	_channels.push_back( channel );
 	return channel;
 }
 void AudioManager::updateListener( const glm::vec3& position, const glm::vec3& velocity, const glm::vec3& forward, const glm::vec3& up )
@@ -122,5 +123,19 @@ void AudioManager::updateListener( const glm::vec3& position, const glm::vec3& v
 		FMOD_VECTOR upw{ up.x, up.y, up.z };
 		// update the listener's position and velocity
 		_audioSystem->set3DListenerAttributes( 0, &pos, &vel, &forw, &upw );
+	}
+}
+void AudioManager::toggleSound( )
+{
+	if ( _audioSystem != nullptr )
+	{
+		_muted = !_muted;
+		for each ( auto channel in _channels )
+		{
+			if ( channel != nullptr )
+			{
+				channel->setMute( _muted );
+			}
+		}
 	}
 }
