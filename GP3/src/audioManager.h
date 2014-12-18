@@ -15,8 +15,11 @@ public:
 	// Number of times to loop before stopping. 0 = oneshot. 1 = loop once then stop. -1 = loop forever. Default = -1 
 	FMOD::Channel* playSound( FMOD::Sound* sound, const int loopCount = -1 );
 	void updateListener( const glm::vec3& position, const glm::vec3& velocity, const glm::vec3& forward, const glm::vec3& up );
+	void toggleSound( );
 private:
 	AudioManager( );
 private:
-	FMOD::System* _audioSystem;
+	FMOD::System* 					_audioSystem;
+	std::vector< FMOD::Channel* > 	_channels;
+	bool 							_muted;
 };

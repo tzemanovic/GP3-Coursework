@@ -1,0 +1,494 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AudioComponent" Collapsed="true">
+    <Position X="1.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAIABAACACAAAAAAAAgBAAAA=</HashCode>
+      <FileName>src\audioComponent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AudioManager" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAgAQABAAAAIAAAAAAEAAACEAAA=</HashCode>
+      <FileName>src\audioManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Camera" Collapsed="true">
+    <Position X="7.75" Y="5.75" Width="1.5" />
+    <InheritanceLine Type="SceneNode" FixedToPoint="true">
+      <Path>
+        <Point X="6.5" Y="5.868" />
+        <Point X="6.5" Y="6.062" />
+        <Point X="7.75" Y="6.062" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAACAgIAAAGAAAAAIAAAAIAASAAAAAUAAgAAAAAAAAA=</HashCode>
+      <FileName>src\camera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Component" Collapsed="true">
+    <Position X="4.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgggABAAAAAAAQAAAAAAIAAAQAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>src\component.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controller" Collapsed="true">
+    <Position X="9.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIQAAQAAgAAQAEEAAAAwAAAAQAAADAAAAAAEAAA=</HashCode>
+      <FileName>src\controller.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Game">
+    <Position X="7.25" Y="0.5" Width="1.5" />
+    <Members>
+      <Field Name="_defaultShaders" Hidden="true" />
+      <Field Name="_lastId" Hidden="true" />
+      <Method Name="~Game" Hidden="true" />
+      <Method Name="addGameObject" Hidden="true" />
+      <Method Name="addSceneNode" Hidden="true" />
+      <Method Name="addView" Hidden="true" />
+      <Method Name="Game" Hidden="true" />
+      <Method Name="getDefaultShaders" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+      <Method Name="passMessage" Hidden="true" />
+      <Method Name="render" Hidden="true" />
+      <Method Name="run" Hidden="true" />
+      <Method Name="update" Hidden="true" />
+      <Method Name="windowAspectRatio" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>BAAAAkAACgABAAAAAAAAABAACAiAAAAAACAgAAAUQAA=</HashCode>
+      <FileName>src\game.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_window" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="GameObject">
+    <Position X="6" Y="1.5" Width="1.5" />
+    <Members>
+      <Field Name="_canCollide" Hidden="true" />
+      <Field Name="_collisionTimeoutMs" Hidden="true" />
+      <Field Name="_fixed" Hidden="true" />
+      <Field Name="_id" Hidden="true" />
+      <Field Name="_justCollided" Hidden="true" />
+      <Field Name="_lastCollisionMs" Hidden="true" />
+      <Field Name="_onUpdate" Hidden="true" />
+      <Field Name="_pos" Hidden="true" />
+      <Field Name="_radius" Hidden="true" />
+      <Field Name="_rot" Hidden="true" />
+      <Field Name="_scale" Hidden="true" />
+      <Field Name="_transform" Hidden="true" />
+      <Field Name="_transformNonScaled" Hidden="true" />
+      <Field Name="_velocity" Hidden="true" />
+      <Method Name="~GameObject" Hidden="true" />
+      <Method Name="addComponent" Hidden="true" />
+      <Method Name="canCollide" Hidden="true" />
+      <Method Name="GameObject" Hidden="true" />
+      <Method Name="getComponent" Hidden="true" />
+      <Method Name="getId" Hidden="true" />
+      <Method Name="getPos" Hidden="true" />
+      <Method Name="getRadius" Hidden="true" />
+      <Method Name="getScale" Hidden="true" />
+      <Method Name="getTransform" Hidden="true" />
+      <Method Name="getTransformNonScaled" Hidden="true" />
+      <Method Name="getVelocity" Hidden="true" />
+      <Method Name="init" Hidden="true" />
+      <Method Name="isFixed" Hidden="true" />
+      <Method Name="operator delete" Hidden="true" />
+      <Method Name="operator new" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+      <Method Name="rotate" Hidden="true" />
+      <Method Name="scale" Hidden="true" />
+      <Method Name="setCollisionTimeoutMs" Hidden="true" />
+      <Method Name="setFixed" Hidden="true" />
+      <Method Name="setId" Hidden="true" />
+      <Method Name="setJustCollided" Hidden="true" />
+      <Method Name="setOnUpdate" Hidden="true" />
+      <Method Name="setPos" Hidden="true" />
+      <Method Name="setRadius" Hidden="true" />
+      <Method Name="setScale" Hidden="true" />
+      <Method Name="setVelocity" Hidden="true" />
+      <Method Name="setX" Hidden="true" />
+      <Method Name="setY" Hidden="true" />
+      <Method Name="setZ" Hidden="true" />
+      <Method Name="sphereSphereCollision" Hidden="true" />
+      <Method Name="update" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Typedef Name="GameObject::OnUpdate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>src\gameObject.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Typedef>
+      <Typedef Name="GameObject::ComponentMap" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>src\gameObject.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Typedef>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ChSCAAaBAAIAJUQECSFWAYASAIAoBAKCCYBgAAMEACA=</HashCode>
+      <FileName>src\gameObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InputMessage" Collapsed="true">
+    <Position X="11" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAABAAAAABAAAAAAAAA=</HashCode>
+      <FileName>src\inputMessage.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshComponent">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <Members>
+      <Method Name="~MeshComponent" Hidden="true" />
+      <Method Name="MeshComponent" Hidden="true" />
+      <Method Name="vInit" Hidden="true" />
+      <Method Name="vRender" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAACAAAAAAgAAAAAAAAgAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>src\meshComponent.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_model" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MeshModel">
+    <Position X="3" Y="6.5" Width="1.75" />
+    <Members>
+      <Field Name="_filename" Hidden="true" />
+      <Field Name="_maxExtents" Hidden="true" />
+      <Field Name="_meshRot" Hidden="true" />
+      <Field Name="_minExtents" Hidden="true" />
+      <Field Name="_texturesTarget" Hidden="true" />
+      <Method Name="~MeshModel" Hidden="true" />
+      <Method Name="calcExtents" Hidden="true" />
+      <Method Name="getRadius" Hidden="true" />
+      <Method Name="load" Hidden="true" />
+      <Method Name="loadMesh" Hidden="true" />
+      <Method Name="loadTexture" Hidden="true" />
+      <Method Name="MeshModel" Hidden="true" />
+      <Method Name="rotateMesh" Hidden="true" />
+      <Method Name="setMeshRot" Hidden="true" />
+      <Method Name="vRender" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Struct Name="MeshModel::Mesh" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>src\meshModel.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <AssociationLine Name="_shaders" Type="ShaderProgram" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.75" Y="7.44" />
+        <Point X="5.125" Y="7.44" />
+        <Point X="5.125" Y="8.281" />
+        <Point X="5.5" Y="8.281" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABYQAAAQAAECAAAACAAECBBAASAAEBCAAgAA=</HashCode>
+      <FileName>src\meshModel.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_shaders" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="OpenGl">
+    <Position X="13.75" Y="1.25" Width="1.5" />
+    <Members>
+      <Field Name="_deviceContext" Hidden="true" />
+      <Field Name="_openGlContext" Hidden="true" />
+      <Field Name="_window" Hidden="true" />
+      <Method Name="~OpenGl" Hidden="true" />
+      <Method Name="checkGlError" Hidden="true" />
+      <Method Name="clear" Hidden="true" />
+      <Method Name="createContext" Hidden="true" />
+      <Method Name="display" Hidden="true" />
+      <Method Name="fillMode" Hidden="true" />
+      <Method Name="OpenGl" Hidden="true" />
+      <Method Name="pointMode" Hidden="true" />
+      <Method Name="wireframeMode" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AEAAgEAAAgBAAgAAAAQAAAAAQAEAAAIAAAAAgAAAAEA=</HashCode>
+      <FileName>src\openGl.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_openGlConfig" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="PlayerView">
+    <Position X="8.75" Y="4" Width="1.5" />
+    <Members>
+      <Field Name="_isFreeCameraController" Hidden="true" />
+      <Method Name="~PlayerView" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+      <Method Name="PlayerView" Hidden="true" />
+      <Method Name="setAmbientLightColor" Hidden="true" />
+      <Method Name="setCameraOffset" Hidden="true" />
+      <Method Name="setCameraRotation" Hidden="true" />
+      <Method Name="setController" Hidden="true" />
+      <Method Name="setDiffuseLightColor" Hidden="true" />
+      <Method Name="setLightDirection" Hidden="true" />
+      <Method Name="vAddSceneNode" Hidden="true" />
+      <Method Name="vInit" Hidden="true" />
+      <Method Name="vOwn" Hidden="true" />
+      <Method Name="vProcessMessage" Hidden="true" />
+      <Method Name="vRender" Hidden="true" />
+      <Method Name="vUpdate" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAgAFEAAAAIAAAAQAAAJAAAAAAwBACAAIkAGAEAAA=</HashCode>
+      <FileName>src\playerView.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_scene" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Renderable" Collapsed="true">
+    <Position X="0.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAEQAAAAAA=</HashCode>
+      <FileName>src\renderable.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderComponent" Collapsed="true">
+    <Position X="2.75" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\renderComponent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scene">
+    <Position X="11.25" Y="3.75" Width="1.75" />
+    <Members>
+      <Field Name="_ambientLightColor" Hidden="true" />
+      <Field Name="_diffuseLightColor" Hidden="true" />
+      <Field Name="_lightDirection" Hidden="true" />
+      <Field Name="_rootNode" Hidden="true" />
+      <Method Name="~Scene" Hidden="true" />
+      <Method Name="addSceneNode" Hidden="true" />
+      <Method Name="getAmbientLightColor" Hidden="true" />
+      <Method Name="getDiffuseLightColor" Hidden="true" />
+      <Method Name="getLightDirection" Hidden="true" />
+      <Method Name="render" Hidden="true" />
+      <Method Name="Scene" Hidden="true" />
+      <Method Name="setAmbientLightColor" Hidden="true" />
+      <Method Name="setDiffuseLightColor" Hidden="true" />
+      <Method Name="setLightDirection" Hidden="true" />
+      <Method Name="update" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Scene::RootSceneNode">
+        <Members>
+          <Method Name="addChild" Hidden="true" />
+          <Method Name="RootSceneNode" Hidden="true" />
+          <Method Name="vRenderChildren" Hidden="true" />
+        </Members>
+        <Compartments>
+          <Compartment Name="Methods" Collapsed="true" />
+        </Compartments>
+        <TypeIdentifier>
+          <NewMemberFileName>src\scene.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ABBAAAAEgAACICACgQAAAAAAQCgAAAAAAAAAAAAUAAA=</HashCode>
+      <FileName>src\scene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SceneNode">
+    <Position X="5.75" Y="5" Width="1.5" />
+    <Members>
+      <Field Name="_children" Hidden="true" />
+      <Field Name="_fromWorld" Hidden="true" />
+      <Field Name="_gameObjectId" Hidden="true" />
+      <Field Name="_toWorld" Hidden="true" />
+      <Field Name="_toWorldNonScaled" Hidden="true" />
+      <Method Name="~SceneNode" Hidden="true" />
+      <Method Name="addChild" Hidden="true" />
+      <Method Name="getPosition" Hidden="true" />
+      <Method Name="getWorldPosition" Hidden="true" />
+      <Method Name="operator delete" Hidden="true" />
+      <Method Name="operator new" Hidden="true" />
+      <Method Name="SceneNode" Hidden="true" />
+      <Method Name="setParent" Hidden="true" />
+      <Method Name="vIsVisible" Hidden="true" />
+      <Method Name="vPostRender" Hidden="true" />
+      <Method Name="vPreRender" Hidden="true" />
+      <Method Name="vRender" Hidden="true" />
+      <Method Name="vRenderChildren" Hidden="true" />
+      <Method Name="vUpdate" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AACQJAAAAAAKgEIAABAAAYAQAAEABAAAAAAGAABAEAI=</HashCode>
+      <FileName>src\sceneNode.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_parent" />
+      <Field Name="_renderComponent" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ShaderProgram" Collapsed="true">
+    <Position X="5.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAMAAAAYAAAABAAhAAAAAQBAABAAAAAgA=</HashCode>
+      <FileName>src\shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shader" Collapsed="true">
+    <Position X="5.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>src\shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SkyboxMeshComponent" Collapsed="true">
+    <Position X="0.5" Y="8" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAgAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\skyboxMeshComponent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SkyboxMeshModel" Collapsed="true">
+    <Position X="0.5" Y="9.5" Width="1.75" />
+    <InheritanceLine Type="MeshModel" FixedFromPoint="true">
+      <Path>
+        <Point X="3" Y="7.781" />
+        <Point X="2.7" Y="7.781" />
+        <Point X="2.7" Y="8.55" />
+        <Point X="2.55" Y="8.55" />
+        <Point X="2.55" Y="9.846" />
+        <Point X="2.25" Y="9.846" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAgA=</HashCode>
+      <FileName>src\skyboxMeshModel.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Texture" Collapsed="true">
+    <Position X="2.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAABYAAgAQAAAAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>src\texture.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="View" Collapsed="true">
+    <Position X="8.5" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAFAAAAAAAAAAEAAAIAAAAABgAACAAAkAAAAAAA=</HashCode>
+      <FileName>src\view.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Window">
+    <Position X="11.25" Y="0.5" Width="1.5" />
+    <Members>
+      <Field Name="_bitsPerPx" Hidden="true" />
+      <Field Name="_height" Hidden="true" />
+      <Field Name="_mouseCaptured" Hidden="true" />
+      <Field Name="_mouseCursor" Hidden="true" />
+      <Field Name="_oldKeyStates" Hidden="true" />
+      <Field Name="_open" Hidden="true" />
+      <Field Name="_width" Hidden="true" />
+      <Field Name="_windowHandle" Hidden="true" />
+      <Field Name="_windowName" Hidden="true" />
+      <Field Name="_windowStyle" Hidden="true" />
+      <Method Name="captureMouse" Hidden="true" />
+      <Method Name="clear" Hidden="true" />
+      <Method Name="close" Hidden="true" />
+      <Method Name="display" Hidden="true" />
+      <Method Name="getCurrentMode" Hidden="true" />
+      <Method Name="getHeight" Hidden="true" />
+      <Method Name="getOpenGl" Hidden="true" />
+      <Method Name="getWidth" Hidden="true" />
+      <Method Name="isOnlyInstance" Hidden="true" />
+      <Method Name="isOpen" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+      <Method Name="popMessage" Hidden="true" />
+      <Method Name="processMessages" Hidden="true" />
+      <Method Name="releaseMouse" Hidden="true" />
+      <Method Name="setMouseCursorVisibility" Hidden="true" />
+      <Method Name="setWindowVisibility" Hidden="true" />
+      <Method Name="staticWndProc" Hidden="true" />
+      <Method Name="switchToFullscreen" Hidden="true" />
+      <Method Name="time" Hidden="true" />
+      <Method Name="Window" Hidden="true" />
+      <Method Name="wndProc" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>UEBBAmIAAACQABAAAAAAAAAgABEAQAIAnIAoCCAQWGI=</HashCode>
+      <FileName>src\window.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_openGl" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WindowConfig" Collapsed="true">
+    <Position X="13" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QiAABgAAAACAAAAAAAAAAAAQABAAQAIEAEAgAAAAAAA=</HashCode>
+      <FileName>src\windowConfig.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="ControllerConfig" Collapsed="true">
+    <Position X="10.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAQAAAAAAAAgAAQBIgAAAABAAAAABAQ=</HashCode>
+      <FileName>src\controllerConfig.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ControllerState" Collapsed="true">
+    <Position X="7.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAABAAAABAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\controllerConfig.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="OpenGlConfig" Collapsed="true">
+    <Position X="13.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAMAAAAQAAAAAAAAAAAAAAAAQEAAAA=</HashCode>
+      <FileName>src\openGlConfig.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Time" Collapsed="true">
+    <Position X="11.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\time.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Vertex" Collapsed="true">
+    <Position X="3" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAIgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\vertex.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
